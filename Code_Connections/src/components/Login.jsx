@@ -1,16 +1,21 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../services/authService';
+import { useAuth } from '../AuthContext';
 
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const navigate = useNavigate();
+    const { login } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await loginUser(email, password);
-            alert('Login successful!');
+            const user = await loginUser(email, password);
+            login(user);
+            navigate('/');
         } catch (err) {
             setError(err.message);
         }
@@ -20,9 +25,17 @@ function Login() {
         <div>
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
-                <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+                <input
+                    type="email"
+                    placeholder="Email"
+                    onChange={(e) => setEmail(e.target.value)}
+                />
                 <br />
-                <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+                <input
+                    type="password"
+                    placeholder="Password"
+                    onChange={(e) => setPassword(e.target.value)}
+                />
                 <br />
                 <br />
                 <button type="submit">Log In</button>

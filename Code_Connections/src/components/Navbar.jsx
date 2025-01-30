@@ -1,41 +1,42 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext';
 
 const Navbar = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const navigate = useNavigate();
+    const { user, logout } = useAuth();
+    const navigate = useNavigate();
 
-  const handleSearch = (e) => {
-    e.preventDefault();
-    navigate(`/?search=${searchTerm}`);
+    const handleLogout = () => {
+      if (window.confirm('Are you sure you want to log out?')) {
+          logout();
+          navigate('/login');
+      }
   };
 
-  const handleRegisterClick = () => {
-    navigate('/register');
+  const handleLogin = () => {
+      navigate('/login');
   };
 
-  const handleLoginClick = () => {
-    navigate('/login');
+  const handleRegister = () => {
+      navigate('/register');
   };
 
-  return (
-    <nav className="navbar">
-      <Link to="/" className="nav-link">Home</Link>
-      <Link to="/create" className="nav-link">Create Post</Link>
-      <button onClick={handleLoginClick} className="nav-link">Login</button>
-      <button onClick={handleRegisterClick} className="nav-link">Register</button>
-      <form onSubmit={handleSearch} className="search-form">
-        <input
-          type="text"
-          placeholder="Search by title..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="search-input"
-        />
-        <button type="submit" className="search-button">Search</button>
-      </form>
-    </nav>
-  );
+    return (
+        <nav className="navbar">
+            <Link to="/" className="nav-link">Home</Link>
+            {user ? (
+                <>
+                    <button onClick={() => navigate('/create')} className="nav-link">Create Post</button>
+                    <button onClick={handleLogout} className="nav-link">Logout</button>
+                </>
+            ) : (
+                <>
+                    <button onClick={handleLogin} className="nav-link">Login</button>
+                    <button onClick={handleRegister} className="nav-link">Register</button>
+                </>
+            )}
+        </nav>
+    );
 };
 
 export default Navbar;
