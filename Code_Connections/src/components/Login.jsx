@@ -21,7 +21,10 @@ function Login() {
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
                 <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+                <br />
                 <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+                <br />
+                <br />
                 <button type="submit">Log In</button>
             </form>
             {error && <p style={{ color: 'red' }}>{error}</p>}
