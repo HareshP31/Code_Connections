@@ -21,7 +21,10 @@ function Register() {
             <h2>Register</h2>
             <form onSubmit={handleSubmit}>
                 <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+                <br />
                 <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+                <br />
+                <br />
                 <button type="submit">Sign Up</button>
             </form>
             {error && <p style={{ color: 'red' }}>{error}</p>}

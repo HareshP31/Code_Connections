@@ -10,10 +10,15 @@ const Navbar = () => {
     navigate(`/?search=${searchTerm}`);
   };
 
+  const handleRegisterClick = () => {
+    navigate('/register');
+  };
+
   return (
     <nav className="navbar">
       <Link to="/" className="nav-link">Home</Link>
       <Link to="/create" className="nav-link">Create Post</Link>
+      <button onClick={handleRegisterClick} className="nav-link">Register</button>
       <form onSubmit={handleSearch} className="search-form">
         <input
           type="text"
