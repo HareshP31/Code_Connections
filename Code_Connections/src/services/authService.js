@@ -1,4 +1,4 @@
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 import {
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
@@ -7,11 +7,10 @@ import {
     setPersistence,
     browserSessionPersistence,
 } from 'firebase/auth';
+import { collection, query, where, getDocs, setDoc, doc } from 'firebase/firestore';
 
-// Initialize session persistence
 export const initializeAuthPersistence = async () => {
     try {
-        // Set session-only persistence
         await setPersistence(auth, browserSessionPersistence);
         console.log('Firebase auth persistence set to session.');
     } catch (error) {
@@ -26,6 +25,12 @@ export const registerUser = async (email, password, username) => {
 
         await updateProfile(user, { displayName: username });
 
+        await setDoc(doc(db, 'users', user.uid), {
+            uid: user.uid,
+            username: username,
+            email: email,
+        });
+
         return {
             uid: user.uid,
             email: user.email,
@@ -36,8 +41,25 @@ export const registerUser = async (email, password, username) => {
     }
 };
 
-export const loginUser = async (email, password) => {
+export const loginUser = async (identifier, password) => {
     try {
+        let email = identifier;
+
+        if (!identifier.includes('@')) {
+            const usersRef = collection(db, 'users');
+            const q = query(usersRef, where('username', '==', identifier));
+            const querySnapshot = await getDocs(q);
+        
+            console.log('Query result for username:', identifier, querySnapshot.docs.map(doc => doc.data()));
+        
+            if (!querySnapshot.empty) {
+                email = querySnapshot.docs[0].data().email;
+            } else {
+                throw new Error('No account found with that username.');
+            }
+        }
+        
+
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 

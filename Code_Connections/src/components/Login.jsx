@@ -4,7 +4,7 @@ import { loginUser } from '../services/authService';
 import { useAuth } from '../AuthContext';
 
 function Login() {
-    const [email, setEmail] = useState('');
+    const [identifier, setIdentifier] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const navigate = useNavigate();
@@ -13,7 +13,7 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const user = await loginUser(email, password);
+            const user = await loginUser(identifier, password);
             login(user);
             navigate('/');
         } catch (err) {
@@ -26,9 +26,9 @@ function Login() {
             <h2>Login</h2>
             <form onSubmit={handleSubmit}>
                 <input
-                    type="email"
-                    placeholder="Email"
-                    onChange={(e) => setEmail(e.target.value)}
+                    type="text"
+                    placeholder="Username or Email"
+                    onChange={(e) => setIdentifier(e.target.value)}
                 />
                 <br />
                 <input
