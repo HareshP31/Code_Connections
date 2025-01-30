@@ -4,7 +4,20 @@ import {
     signInWithEmailAndPassword,
     signOut,
     updateProfile,
+    setPersistence,
+    browserSessionPersistence,
 } from 'firebase/auth';
+
+// Initialize session persistence
+export const initializeAuthPersistence = async () => {
+    try {
+        // Set session-only persistence
+        await setPersistence(auth, browserSessionPersistence);
+        console.log('Firebase auth persistence set to session.');
+    } catch (error) {
+        console.error('Error setting Firebase persistence:', error);
+    }
+};
 
 export const registerUser = async (email, password, username) => {
     try {
