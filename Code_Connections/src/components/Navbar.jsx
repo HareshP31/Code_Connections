@@ -28,18 +28,25 @@ const Navbar = () => {
     }, [user, isRegistering]);
 
     const handleLogout = () => {
-        if (window.confirm('Are you sure you want to log out?')) {
-            if (isRegistering) {
-                setTimeout(() => {
-                    logout();
-                    navigate('/login');
-                }, 2000);
-            } else {
-                logout();
-                navigate('/login');
-            }
-        }
-    };
+      if (window.confirm('Are you sure you want to log out?')) {
+          if (isRegistering) {
+              setTimeout(() => {
+                  logout();
+                  navigate('/login');
+                  setTimeout(() => {
+                      document.activeElement.blur();
+                  }, 0);
+              }, 2000);
+          } else {
+              logout();
+              navigate('/login');
+              setTimeout(() => {
+                  document.activeElement.blur();
+              }, 0);
+          }
+      }
+  };
+  
 
     const handleCreatePost = () => {
         if (isRegistering) {
