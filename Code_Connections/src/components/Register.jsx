@@ -1,16 +1,22 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../services/authService';
+import { useAuth } from '../AuthContext';
 
 function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const { login } = useAuth();
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await registerUser(email, password);
+            const user = await registerUser(email, password);
             alert('Registration successful!');
+            login(user);
+            navigate('/');
         } catch (err) {
             setError(err.message);
         }
@@ -20,9 +26,17 @@ function Register() {
         <div>
             <h2>Register</h2>
             <form onSubmit={handleSubmit}>
-                <input type="email" placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+                <input
+                    type="email"
+                    placeholder="Email"
+                    onChange={(e) => setEmail(e.target.value)}
+                />
                 <br />
-                <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+                <input
+                    type="password"
+                    placeholder="Password"
+                    onChange={(e) => setPassword(e.target.value)}
+                />
                 <br />
                 <br />
                 <button type="submit">Sign Up</button>
