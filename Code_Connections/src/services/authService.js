@@ -49,16 +49,15 @@ export const loginUser = async (identifier, password) => {
             const usersRef = collection(db, 'users');
             const q = query(usersRef, where('username', '==', identifier));
             const querySnapshot = await getDocs(q);
-        
+
             console.log('Query result for username:', identifier, querySnapshot.docs.map(doc => doc.data()));
-        
+
             if (!querySnapshot.empty) {
                 email = querySnapshot.docs[0].data().email;
             } else {
                 throw new Error('No account found with that username.');
             }
         }
-        
 
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
@@ -76,7 +75,10 @@ export const loginUser = async (identifier, password) => {
 export const logoutUser = async () => {
     try {
         await signOut(auth);
+        await setPersistence(auth, browserSessionPersistence);
+        console.log('User logged out and session cleared.');
     } catch (error) {
+        console.error('Error during logout:', error);
         throw new Error(error.message);
     }
 };

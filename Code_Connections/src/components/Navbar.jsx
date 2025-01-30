@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
+import { logoutUser } from '../services/authService';
+
 
 const Navbar = () => {
-    const { user, logout } = useAuth();
+    const { user } = useAuth();
     const navigate = useNavigate();
     const [showWelcome, setShowWelcome] = useState(false);
     const [isRegistering, setIsRegistering] = useState(false);
@@ -26,23 +28,28 @@ const Navbar = () => {
             setShowWelcome(false);
         }
     }, [user, isRegistering]);
+    
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
       if (window.confirm('Are you sure you want to log out?')) {
-          if (isRegistering) {
-              setTimeout(() => {
-                  logout();
+          try {
+              if (isRegistering) {
+                  setTimeout(async () => {
+                      await logoutUser();
+                      navigate('/login');
+                      setTimeout(() => {
+                          document.activeElement.blur();
+                      }, 0);
+                  }, 2000);
+              } else {
+                  await logoutUser();
                   navigate('/login');
                   setTimeout(() => {
                       document.activeElement.blur();
                   }, 0);
-              }, 2000);
-          } else {
-              logout();
-              navigate('/login');
-              setTimeout(() => {
-                  document.activeElement.blur();
-              }, 0);
+              }
+          } catch (error) {
+              console.error('Error during logout:', error);
           }
       }
   };
