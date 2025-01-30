@@ -14,10 +14,15 @@ const Navbar = () => {
     navigate('/register');
   };
 
+  const handleLoginClick = () => {
+    navigate('/login');
+  };
+
   return (
     <nav className="navbar">
       <Link to="/" className="nav-link">Home</Link>
       <Link to="/create" className="nav-link">Create Post</Link>
+      <button onClick={handleLoginClick} className="nav-link">Login</button>
       <button onClick={handleRegisterClick} className="nav-link">Register</button>
       <form onSubmit={handleSearch} className="search-form">
         <input

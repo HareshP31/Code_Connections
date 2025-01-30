@@ -6,6 +6,7 @@ import CreatePost from './pages/CreatePost';
 import PostPage from './pages/PostPage';
 import UpdatePost from './pages/UpdatePost';
 import Register from './components/Register';
+import Login from './components/Login';
 import './styles/App.css';
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
             <Route path="/create" element={<CreatePost />} />
             <Route path="/post/:id" element={<PostPage />} />
             <Route path="/update/:id" element={<UpdatePost />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
           </Routes>
         </div>
