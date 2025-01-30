@@ -8,6 +8,7 @@ function Register() {
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const [error, setError] = useState('');
+    const [success, setSuccess] = useState('');
     const { login } = useAuth();
     const navigate = useNavigate();
 
@@ -15,9 +16,9 @@ function Register() {
         e.preventDefault();
         try {
             const user = await registerUser(email, password, username);
-            alert('Registration successful!');
+            setSuccess('Registration successful! Redirecting to the homepage...');
             login({ ...user, username });
-            navigate('/');
+            setTimeout(() => navigate('/'), 2000);
         } catch (err) {
             setError(err.message);
         }
@@ -30,18 +31,21 @@ function Register() {
                 <input
                     type="text"
                     placeholder="Username"
+                    value={username}
                     onChange={(e) => setUsername(e.target.value)}
                 />
                 <br />
                 <input
                     type="email"
                     placeholder="Email"
+                    value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
                 <br />
                 <input
                     type="password"
                     placeholder="Password"
+                    value={password}
                     onChange={(e) => setPassword(e.target.value)}
                 />
                 <br />
@@ -49,6 +53,7 @@ function Register() {
                 <button type="submit">Sign Up</button>
             </form>
             {error && <p style={{ color: 'red' }}>{error}</p>}
+            {success && <p style={{ color: 'green' }}>{success}</p>}
         </div>
     );
 }
