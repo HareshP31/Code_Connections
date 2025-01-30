@@ -6,6 +6,7 @@ import { useAuth } from '../AuthContext';
 function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [username, setUsername] = useState('');
     const [error, setError] = useState('');
     const { login } = useAuth();
     const navigate = useNavigate();
@@ -13,9 +14,9 @@ function Register() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const user = await registerUser(email, password);
+            const user = await registerUser(email, password, username);
             alert('Registration successful!');
-            login(user);
+            login({ ...user, username });
             navigate('/');
         } catch (err) {
             setError(err.message);
@@ -26,6 +27,12 @@ function Register() {
         <div>
             <h2>Register</h2>
             <form onSubmit={handleSubmit}>
+                <input
+                    type="text"
+                    placeholder="Username"
+                    onChange={(e) => setUsername(e.target.value)}
+                />
+                <br />
                 <input
                     type="email"
                     placeholder="Email"

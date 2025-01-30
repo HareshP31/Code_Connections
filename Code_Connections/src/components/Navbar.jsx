@@ -7,23 +7,20 @@ const Navbar = () => {
     const navigate = useNavigate();
 
     const handleLogout = () => {
-      if (window.confirm('Are you sure you want to log out?')) {
-          logout();
-          navigate('/login');
-      }
-  };
-
-  const handleLogin = () => {
-      navigate('/login');
-  };
-
-  const handleRegister = () => {
-      navigate('/register');
-  };
+        if (window.confirm('Are you sure you want to log out?')) {
+            logout();
+            navigate('/login');
+        }
+    };
 
     return (
         <nav className="navbar">
+            {user && (
+                <span className="welcome-message">Welcome, {user.username}!</span>
+            )}
+
             <Link to="/" className="nav-link">Home</Link>
+
             {user ? (
                 <>
                     <button onClick={() => navigate('/create')} className="nav-link">Create Post</button>
@@ -31,8 +28,8 @@ const Navbar = () => {
                 </>
             ) : (
                 <>
-                    <button onClick={handleLogin} className="nav-link">Login</button>
-                    <button onClick={handleRegister} className="nav-link">Register</button>
+                    <button onClick={() => navigate('/login')} className="nav-link">Login</button>
+                    <button onClick={() => navigate('/register')} className="nav-link">Register</button>
                 </>
             )}
         </nav>
