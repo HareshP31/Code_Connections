@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { registerUser } from '../services/authService';
+import { registerUser, loginWithGoogle } from '../services/authService';
 import { useAuth } from '../AuthContext';
 
 function Register() {
@@ -19,6 +19,16 @@ function Register() {
             setSuccess('Registration successful! Redirecting to the homepage...');
             login({ ...user, username });
             setTimeout(() => navigate('/'), 2000);
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+    const handleGoogleRegister = async () => {
+        try {
+            const user = await loginWithGoogle();
+            login(user);
+            navigate('/');
         } catch (err) {
             setError(err.message);
         }
@@ -52,6 +62,15 @@ function Register() {
                 <br />
                 <button type="submit">Sign Up</button>
             </form>
+            <button onClick={handleGoogleRegister} style={{ marginTop: '10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <img 
+                    src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000" 
+                    alt="Google Icon" 
+                    style={{ width: '20px', height: '20px' }} 
+                />
+                Sign Up with Google
+            </button>
+
             {error && <p style={{ color: 'red' }}>{error}</p>}
             {success && <p style={{ color: 'green' }}>{success}</p>}
         </div>

@@ -1,5 +1,7 @@
 import { auth, db } from '../firebase';
 import {
+    GoogleAuthProvider,
+    signInWithPopup,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     signOut,
@@ -7,7 +9,7 @@ import {
     setPersistence,
     browserSessionPersistence,
 } from 'firebase/auth';
-import { collection, query, where, getDocs, setDoc, doc } from 'firebase/firestore';
+import { doc, setDoc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
 
 export const initializeAuthPersistence = async () => {
     try {
@@ -41,6 +43,34 @@ export const registerUser = async (email, password, username) => {
     }
 };
 
+export const loginWithGoogle = async () => {
+    try {
+        const provider = new GoogleAuthProvider();
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+
+        const userDocRef = doc(db, 'users', user.uid);
+        const userDoc = await getDoc(userDocRef);
+
+        if (!userDoc.exists()) {
+            const displayName = user.displayName || 'Google_User';
+            await setDoc(userDocRef, {
+                uid: user.uid,
+                username: displayName,
+                email: user.email,
+            });
+        }
+
+        return {
+            uid: user.uid,
+            email: user.email,
+            username: user.displayName,
+        };
+    } catch (error) {
+        throw new Error(error.message);
+    }
+};
+
 export const loginUser = async (identifier, password) => {
     try {
         let email = identifier;
@@ -49,8 +79,6 @@ export const loginUser = async (identifier, password) => {
             const usersRef = collection(db, 'users');
             const q = query(usersRef, where('username', '==', identifier));
             const querySnapshot = await getDocs(q);
-
-            console.log('Query result for username:', identifier, querySnapshot.docs.map(doc => doc.data()));
 
             if (!querySnapshot.empty) {
                 email = querySnapshot.docs[0].data().email;

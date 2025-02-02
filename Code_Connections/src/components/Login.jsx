@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../services/authService';
+import { loginUser, loginWithGoogle } from '../services/authService';
 import { useAuth } from '../AuthContext';
 
 function Login() {
@@ -14,6 +14,16 @@ function Login() {
         e.preventDefault();
         try {
             const user = await loginUser(identifier, password);
+            login(user);
+            navigate('/');
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+    const handleGoogleLogin = async () => {
+        try {
+            const user = await loginWithGoogle();
             login(user);
             navigate('/');
         } catch (err) {
@@ -40,6 +50,15 @@ function Login() {
                 <br />
                 <button type="submit">Log In</button>
             </form>
+            <button onClick={handleGoogleLogin} className="google-login-button" style={{ marginTop: '10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <img 
+                    src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000" 
+                    alt="Google Icon" 
+                    style={{ width: '20px', height: '20px' }} 
+                />
+                Log in with Google
+            </button>
+
             {error && <p style={{ color: 'red' }}>{error}</p>}
         </div>
     );
