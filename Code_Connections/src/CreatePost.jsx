@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 const CreatePost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [image, setImage] = useState('');
+  //const [image, setImage] = useState('');
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -19,7 +19,7 @@ const CreatePost = () => {
     const { data, error } = await supabase
       .from('posts')
       .insert([
-        { title, content, image_url: imageUrl, upvotes: 0, created_at: new Date().toISOString(), },
+        { title, content, upvotes: 0, created_at: new Date().toISOString(), },
       ]);
 
       if (error) {

@@ -17,4 +17,4 @@ const Post = ({ post }) => {
   );
 };
   
-export default App;
+export default Post;
