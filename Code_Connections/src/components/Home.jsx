@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from './client';
+import { supabase } from '../client';
 import Post from './Post';
 import { useLocation } from 'react-router-dom';
 
