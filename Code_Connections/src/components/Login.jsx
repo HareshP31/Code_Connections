@@ -1,7 +1,12 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginUser, loginWithGoogle } from '../services/authService';
 import { useAuth } from '../AuthContext';
+import { 
+    loginUser, 
+    loginWithGoogle, 
+    loginWithDiscord, 
+    handleDiscordCallback 
+} from '../services/authService';
 
 function Login() {
     const [identifier, setIdentifier] = useState('');
@@ -31,6 +36,16 @@ function Login() {
         }
     };
 
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        if (token) {
+            handleDiscordCallback(token)
+                .then(user => console.log('Logged in as:', user))
+                .catch(err => console.error('Login failed:', err));
+        }
+    }, []);
+
     return (
         <div>
             <h2>Login</h2>
@@ -57,7 +72,8 @@ function Login() {
                     style={{ width: '20px', height: '20px' }} 
                 />
                 Log in with Google
-            </button>
+            </button>            
+            <button onClick={loginWithDiscord}>Log In with Discord</button>
 
             {error && <p style={{ color: 'red' }}>{error}</p>}
         </div>

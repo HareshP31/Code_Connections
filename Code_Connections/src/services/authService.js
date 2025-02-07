@@ -1,15 +1,16 @@
 import { auth, db } from '../firebase';
+import { doc, setDoc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
 import {
     GoogleAuthProvider,
     signInWithPopup,
-    createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
+    signInWithCustomToken,
+    createUserWithEmailAndPassword,
     signOut,
     updateProfile,
     setPersistence,
     browserSessionPersistence,
 } from 'firebase/auth';
-import { doc, setDoc, getDoc, collection, query, where, getDocs } from 'firebase/firestore';
 
 export const initializeAuthPersistence = async () => {
     try {
@@ -68,6 +69,20 @@ export const loginWithGoogle = async () => {
         };
     } catch (error) {
         throw new Error(error.message);
+    }
+};
+
+export const loginWithDiscord = async () => {
+    window.location.href = 'http://localhost:5000/api/auth/discord';
+};
+
+export const handleDiscordCallback = async (token) => {
+    try {
+        const userCredential = await signInWithCustomToken(auth, token);
+        return userCredential.user;
+    } catch (error) {
+        console.error('Firebase Custom Token Error:', error);
+        throw error;
     }
 };
 
