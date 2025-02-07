@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { supabase } from './client';
+import { supabase } from '../client';
 
 const UpdatePost = () => {
   const { id } = useParams();

@@ -24,6 +24,16 @@ const Navbar = () => {
         />
         <button type="submit" className="nav-link">Search</button>
       </form>
+      <button onClick={() => navigate('/login')} className="nav-link">Login</button>
+      <button
+        onClick={() => {
+          setIsRegistering(true);
+          navigate('/register');
+        }}
+        className="nav-link"
+      >
+        Register
+      </button>
     </nav>
   );
 };

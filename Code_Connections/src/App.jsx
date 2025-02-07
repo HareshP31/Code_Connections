@@ -5,6 +5,8 @@ import Home from './components/Home';
 import Register from './components/Register';
 import Login from './components/Login';
 import CreatePost from './pages/CreatePost';
+import PostPage from './pages/PostPage';
+import UpdatePost from './pages/UpdatePost';
 import { AuthProvider, useAuth } from './AuthContext.jsx';
 import { initializeAuthPersistence } from './services/authService';
 import './styles/App.css';
