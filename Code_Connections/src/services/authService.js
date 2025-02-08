@@ -60,10 +60,14 @@ export const loginWithGoogle = async () => {
 
         if (!userDoc.exists()) {
             const displayName = user.displayName || 'Google_User';
+            const profilePicture = user.photoURL || 'https://cdn.pfps.gg/pfps/2301-default-2.png';
+
             await setDoc(userDocRef, {
                 uid: user.uid,
                 username: displayName,
                 email: user.email,
+                profilePicture: profilePicture,
+                bio: '',
             });
         }
 
@@ -71,11 +75,13 @@ export const loginWithGoogle = async () => {
             uid: user.uid,
             email: user.email,
             username: user.displayName,
+            profilePicture: user.photoURL, 
         };
     } catch (error) {
         throw new Error(error.message);
     }
 };
+
 
 export const loginUser = async (identifier, password) => {
     try {

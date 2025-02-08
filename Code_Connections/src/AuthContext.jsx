@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
                             uid: currentUser.uid,
                             email: currentUser.email,
                             username: userData.username || currentUser.displayName || 'User',
-                            profilePicture: userData.profilePicture || null,
+                            profilePicture: userData.profilePicture || currentUser.photoURL || 'https://cdn.pfps.gg/pfps/2301-default-2.png',
                             bio: userData.bio || '',
                         });
                     } else {
@@ -40,6 +40,7 @@ export const AuthProvider = ({ children }) => {
                             uid: currentUser.uid,
                             email: currentUser.email,
                             username: currentUser.displayName || 'User',
+                            profilePicture: currentUser.photoURL || 'https://cdn.pfps.gg/pfps/2301-default-2.png',
                         });
                     }
                 } catch (error) {
@@ -54,7 +55,11 @@ export const AuthProvider = ({ children }) => {
         return () => unsubscribe();
     }, []);
 
-    const login = (userData) => setUser(userData);
+    
+    const login = (userData) => {
+        setUser(userData);
+    };
+
 
     const logout = async () => {
         try {
