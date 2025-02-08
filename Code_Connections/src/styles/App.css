@@ -40,28 +40,31 @@ body {
 
 .search-form {
   display: flex;
+  flex-direction: row;
   align-items: center;
   gap: 0.5rem;
+  width: auto;
+  margin: 0;
 }
 
 .search-input {
-  display: flex;
-  align-items: center;
   padding: 0.5rem;
-  border: solid, 2px, black;
+  border: 2px solid black;
   border-radius: 4px;
   background-color: gold;
   color: black;
+  flex-grow: 1;
+  margin-bottom: 0px;
 }
 
 .search-button {
-  padding: 0.5rem;
-  margin-left: 0.5rem;
-  border: solid, 2px, black;
+  padding: 0.5rem 1rem;
+  border: 2px solid black;
   border-radius: 4px;
-  cursor: pointer;
-  color: black;
   background-color: gold;
+  color: black;
+  cursor: pointer;
+  transition: border-color 0.25s ease-in-out;
 }
 
 .create-post, form, input, textarea{
@@ -180,4 +183,32 @@ button:hover {
 
 .sort-options{
   padding: 20px;
+}
+
+.profile-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 3px solid black !important;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.87);
+  margin-right: 15px;
+}
+
+.profile-button:hover {
+  color: white;
+  text-decoration: underline;
+}
+
+.profile-picture {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 8px;
 }

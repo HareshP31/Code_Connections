@@ -1,6 +1,8 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { auth } from './firebase';
 import { onAuthStateChanged, signOut, setPersistence, browserSessionPersistence } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from './firebase';
 
 const AuthContext = createContext();
 
@@ -18,13 +20,31 @@ export const AuthProvider = ({ children }) => {
         };
         initializePersistence();
 
-        const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+        const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             if (currentUser) {
-                setUser({
-                    uid: currentUser.uid,
-                    email: currentUser.email,
-                    username: currentUser.displayName || 'User',
-                });
+                try {
+                    const userRef = doc(db, 'users', currentUser.uid);
+                    const userDoc = await getDoc(userRef);
+
+                    if (userDoc.exists()) {
+                        const userData = userDoc.data();
+                        setUser({
+                            uid: currentUser.uid,
+                            email: currentUser.email,
+                            username: userData.username || currentUser.displayName || 'User',
+                            profilePicture: userData.profilePicture || null,
+                            bio: userData.bio || '',
+                        });
+                    } else {
+                        setUser({
+                            uid: currentUser.uid,
+                            email: currentUser.email,
+                            username: currentUser.displayName || 'User',
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error fetching user data:', error);
+                }
             } else {
                 setUser(null);
             }

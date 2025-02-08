@@ -16,6 +16,7 @@ function Login() {
             const user = await loginUser(identifier, password);
             login(user);
             navigate('/');
+            window.location.reload();
         } catch (err) {
             setError(err.message);
         }
@@ -26,6 +27,7 @@ function Login() {
             const user = await loginWithGoogle();
             login(user);
             navigate('/');
+            window.location.reload();
         } catch (err) {
             setError(err.message);
         }

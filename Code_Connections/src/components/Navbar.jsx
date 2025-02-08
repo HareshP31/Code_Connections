@@ -17,6 +17,8 @@ const Navbar = () => {
     navigate('/');
   };
 
+  const defaultProfilePicture = 'https://cdn.pfps.gg/pfps/2301-default-2.png';
+
   return (
     <nav className="navbar">
       <Link to="/" className="nav-link">Home</Link>
@@ -35,7 +37,17 @@ const Navbar = () => {
       </form>
       {user ? (
         <>
-          <span className="nav-link">Welcome, {user.username}</span>
+          <button
+            onClick={() => navigate('/edit-profile')}
+            className="profile-button"
+          >
+            <img
+              src={user.profilePicture || defaultProfilePicture}
+              alt="Profile"
+              className="profile-picture"
+            />
+            <span className="username">{user.username}</span> 
+          </button>
           <button onClick={handleLogout} className="nav-link">Logout</button>
         </>
       ) : (

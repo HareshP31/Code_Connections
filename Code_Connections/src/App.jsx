@@ -7,6 +7,7 @@ import Login from './components/Login';
 import CreatePost from './pages/CreatePost';
 import PostPage from './pages/PostPage';
 import UpdatePost from './pages/UpdatePost';
+import EditProfile from './pages/EditProfile';
 import { AuthProvider, useAuth } from './AuthContext.jsx';
 import { initializeAuthPersistence } from './services/authService';
 import './styles/App.css';
@@ -34,6 +35,7 @@ const AppContent = () => {
                         <Route path="/create" element={<CreatePost />} />
                         <Route path="/post/:id" element={<PostPage />} />
                         <Route path="/update/:id" element={<UpdatePost />} />
+                        <Route path="/edit-profile" element={<EditProfile />} />
                     </Routes>
                 </div>
             </div>

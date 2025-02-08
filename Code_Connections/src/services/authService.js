@@ -21,6 +21,8 @@ export const initializeAuthPersistence = async () => {
 };
 
 export const registerUser = async (email, password, username) => {
+    const DEFAULT_PROFILE_PICTURE = 'https://cdn.pfps.gg/pfps/2301-default-2.png';
+
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
@@ -31,17 +33,21 @@ export const registerUser = async (email, password, username) => {
             uid: user.uid,
             username: username,
             email: email,
+            profilePicture: DEFAULT_PROFILE_PICTURE,
+            bio: '',
         });
 
         return {
             uid: user.uid,
             email: user.email,
-            username: user.displayName,
+            username: username,
+            profilePicture: DEFAULT_PROFILE_PICTURE,
         };
     } catch (error) {
         throw new Error(error.message);
     }
 };
+
 
 export const loginWithGoogle = async () => {
     try {
