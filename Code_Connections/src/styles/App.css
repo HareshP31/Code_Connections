@@ -166,12 +166,12 @@ button:hover {
 }
 
 .edit-link {
-  color: skyblue;
+  color: white;
   text-decoration: underline;
 }
 
 .edit-link:hover{
-  color: hotpink;
+  color: skyblue;
   text-decoration: underline;
 }
 

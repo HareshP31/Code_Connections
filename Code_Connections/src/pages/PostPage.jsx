@@ -87,8 +87,14 @@ const PostPage = () => {
 
   useEffect(() => {
     fetchPost();
-    fetchComments();
   }, []);
+
+  useEffect(() => {
+    if(post){
+      fetchComments();
+    }
+  }, []);
+
 
   if (!post) {
     return <p>Loading post...</p>;

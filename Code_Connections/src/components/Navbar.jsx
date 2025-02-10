@@ -32,6 +32,7 @@ const Navbar = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="search-input"
+          required
         />
         <button type="submit" className="nav-link">Search</button>
       </form>

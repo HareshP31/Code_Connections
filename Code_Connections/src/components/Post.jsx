@@ -12,7 +12,7 @@ const Post = ({ post }) => {
       <h2>{post.title}</h2>
       <p>Posted on: {formattedDate}</p>
       <p>Upvotes: {post.upvotes}</p>
-      <Link to={'/post/${post.id}'} className = "view-post-link">View Post</Link>
+      <Link to={`/post/${post.id}`} className = "view-post-link">View Post</Link>
     </div>
   );
 };
