@@ -44,13 +44,15 @@ const PostPage = () => {
     const { data, error } = await supabase
       .from('posts')
       .update({ upvotes: post.upvotes + 1 })
-      .eq('id', id);
+      .eq('id', id)
+      .select()
+      .single();
 
     if (error) {
       console.error('Error upvoting:', error);
     } 
     else {
-      setPost(data[0]);
+      setPost(data);
     }
   };
 

@@ -20,7 +20,7 @@ const UpdatePost = () => {
       console.error('Error fetching post:', error);
     }
     else {
-      setTitle(data.tile);
+      setTitle(data.title);
       setContent(data.content);
     }
   };
@@ -30,7 +30,7 @@ const UpdatePost = () => {
 
     const { data, error} = await supabase
       .from('posts')
-      .update({ title, content, image_url: imageUrl })
+      .update({ title, content})
       .eq('id', id);
 
     if (error) {
@@ -72,11 +72,11 @@ const UpdatePost = () => {
           />
 
           <label>Content:</label>
-          <textarea>
+          <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
             required
-          </textarea>
+          />
 
           <button type="submit">Update Post</button>
         </form>
