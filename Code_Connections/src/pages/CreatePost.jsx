@@ -5,8 +5,12 @@ import { useNavigate } from 'react-router-dom';
 const CreatePost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  //const [image, setImage] = useState('');
+  const [imageFile, setImageFile] = useState('');
   const navigate = useNavigate();
+
+  const handleFileChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,10 +20,36 @@ const CreatePost = () => {
       return;
     }
 
+    let imageUrl = null;
+
+    if (imageFile) {
+      const fileName = `${Date.now()}-${imageFile.name}`;
+      const { data, error } = await supabase.storage
+        .from('post-images')
+        .upload(fileName, imageFile);
+
+      if (error) {
+        console.error('Error uploading image:', error);
+        return;
+      }
+
+      console.log('Image upload response data:', data);
+
+      const filePath = `post-images/${fileName}`;
+
+      const { data: publicUrlData } = supabase.storage.from('post-images').getPublicUrl(fileName);
+      imageUrl = publicUrlData.publicUrl;
+    }
+
     const { data, error } = await supabase
       .from('posts')
       .insert([
-        { title, content, upvotes: 0, created_at: new Date().toISOString(), },
+        { title, 
+          content, 
+          upvotes: 0, 
+          created_at: new Date().toISOString(), 
+          image_url: imageUrl,
+        },
       ]);
 
       if (error) {
@@ -47,6 +77,9 @@ const CreatePost = () => {
             onChange={(e) => setContent(e.target.value)}
             required
           ></textarea>
+
+          <label>Upload Image:</label>
+          <input type="file" accept="image/*" onChange={handleFileChange} />
 
           <button type="submit">Create Post</button>
 

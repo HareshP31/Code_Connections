@@ -110,6 +110,7 @@ const PostPage = () => {
     <div className="post-page">
         <h1>{post.title}</h1>
         <p>Posted on: {formattedDate}</p>
+        {post.image_url && <img src={post.image_url} alt="Post" />}
         <p>{post.content}</p>
         <div className="upvote-section">
           <button onClick={handleUpvote}>Upvote</button>
