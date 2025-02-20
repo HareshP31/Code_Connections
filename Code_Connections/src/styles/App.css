@@ -213,3 +213,10 @@ button:hover {
   object-fit: cover;
   margin-right: 8px;
 }
+
+.error {
+  color: red;
+    font-size: 0.9rem;
+    min-height: 1.2rem;
+    margin-top: 5px;
+}

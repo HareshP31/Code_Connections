@@ -7,30 +7,77 @@ function Register() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
-    const [error, setError] = useState('');
+    const [errors, setErrors] = useState({ username: '', email: '', password: '' });
     const [success, setSuccess] = useState('');
     const { login } = useAuth();
     const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        try {
-            const user = await registerUser(email, password, username);
-            setSuccess('Registration successful! Redirecting to the homepage...');
-            login({ ...user, username });
-            setTimeout(() => navigate('/'), 2000);
-        } catch (err) {
-            setError(err.message);
+    const allowedDomains = [
+        'gmail', 'yahoo', 'outlook', 'aol', 
+        'protonmail', 'icloud', 'ucf'
+    ];
+
+    const validateUsername = (value) => {
+        if (value.length < 3) {
+            setErrors((prev) => ({ ...prev, username: 'Username must be at least 3 characters.' }));
+        } else {
+            setErrors((prev) => ({ ...prev, username: '' }));
         }
+        setUsername(value);
     };
 
-    const handleGoogleRegister = async () => {
+    const validateEmail = (value) => {
+        const emailParts = value.split('@');
+    
+        if (emailParts.length !== 2 || emailParts[0].trim() === '') {
+            setErrors((prev) => ({ ...prev, email: 'Please enter a valid email.' }));
+            setEmail(value);
+            return;
+        }
+    
+        const domain = emailParts[1].toLowerCase();
+    
+        
+        if (!allowedDomains.some((d) => domain.startsWith(d))) {
+            setErrors((prev) => ({ ...prev, email: 'Please enter a valid email.' }));
+        } else {
+            setErrors((prev) => ({ ...prev, email: '' }));
+        }
+    
+        setEmail(value);
+    };
+    
+    
+
+    const validatePassword = (value) => {
+        const hasLetter = /[a-zA-Z]/.test(value);
+        const hasNumber = /[0-9]/.test(value);
+
+        if (!hasLetter || !hasNumber) {
+            setErrors((prev) => ({
+                ...prev,
+                password: 'Password must contain both letters and numbers.',
+            }));
+        } else {
+            setErrors((prev) => ({ ...prev, password: '' }));
+        }
+        setPassword(value);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (errors.username || errors.email || errors.password || !username || !email || !password) {
+            return;
+        }
+
         try {
-            const user = await loginWithGoogle();
-            login(user);
-            navigate('/');
-        } catch (err) {
-            setError(err.message);
+            const user = await registerUser(email, password, username);
+            setSuccess('Registration successful! Redirecting...');
+            login({ ...user, username });
+            setTimeout(() => navigate('/'), 2000);
+        } catch (error) {
+            console.error('Registration failed:', error.message);
         }
     };
 
@@ -38,31 +85,46 @@ function Register() {
         <div>
             <h2>Register</h2>
             <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-                <br />
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <br />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <br />
-                <br />
-                <button type="submit">Sign Up</button>
+                {/* Username Field */}
+                <div className="input-container">
+                    <input
+                        type="text"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => validateUsername(e.target.value)}
+                    />
+                    <div className={`error ${errors.username ? 'show' : ''}`}>{errors.username}</div>
+                </div>
+
+                {/* Email Field */}
+                <div className="input-container">
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => validateEmail(e.target.value)}
+                    />
+                    <div className={`error ${errors.email ? 'show' : ''}`}>{errors.email}</div>
+                </div>
+
+                {/* Password Field */}
+                <div className="input-container">
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => validatePassword(e.target.value)}
+                    />
+                    <div className={`error ${errors.password ? 'show' : ''}`}>{errors.password}</div>
+                </div>
+
+                {/* Submit Button */}
+                <button type="submit" disabled={errors.username || errors.email || errors.password}>
+                    Sign Up
+                </button>
             </form>
-            <button onClick={handleGoogleRegister} style={{ marginTop: '10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+
+            <button onClick={loginWithGoogle} style={{ marginTop: '10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <img 
                     src="https://img.icons8.com/?size=100&id=17949&format=png&color=000000" 
                     alt="Google Icon" 
@@ -71,7 +133,6 @@ function Register() {
                 Sign Up with Google
             </button>
 
-            {error && <p style={{ color: 'red' }}>{error}</p>}
             {success && <p style={{ color: 'green' }}>{success}</p>}
         </div>
     );
