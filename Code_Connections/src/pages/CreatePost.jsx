@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { supabase } from '../client';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../AuthContext';
 
 const CreatePost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [imageFile, setImageFile] = useState('');
+  const [imageFile, setImageFile] = useState(null);
   const navigate = useNavigate();
+  const { user } = useAuth(); 
 
   const handleFileChange = (e) => {
     setImageFile(e.target.files[0]);
@@ -17,6 +19,11 @@ const CreatePost = () => {
 
     if (!title || !content) {
       alert('Title and Content are required.');
+      return;
+    }
+
+    if (!user) {
+      alert('You must be logged in to create a post.');
       return;
     }
 
@@ -33,60 +40,48 @@ const CreatePost = () => {
         return;
       }
 
-      console.log('Image upload response data:', data);
-
-      const filePath = `post-images/${fileName}`;
-
       const { data: publicUrlData } = supabase.storage.from('post-images').getPublicUrl(fileName);
       imageUrl = publicUrlData.publicUrl;
     }
 
-    const { data, error } = await supabase
+    const { error } = await supabase
       .from('posts')
       .insert([
-        { title, 
+        { 
+          title, 
           content, 
           upvotes: 0, 
           created_at: new Date().toISOString(), 
           image_url: imageUrl,
-        },
+          owner_id: user.uid, 
+          owner_name: user.username 
+        }
       ]);
 
-      if (error) {
-        console.error('Error creating post:', error);
-      } else {
-        navigate('/');
-      }
-    };
-
-    return (
-      <div className="create-post">
-        <h1>Create a New Post</h1>
-        <form onSubmit={handleSubmit}>
-          <label>Title:</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
-
-          <label>Content:</label>
-          <textarea
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            required
-          ></textarea>
-
-          <label>Upload Image:</label>
-          <input type="file" accept="image/*" onChange={handleFileChange} />
-
-          <button type="submit">Create Post</button>
-
-
-        </form>
-      </div>
-    );
+    if (error) {
+      console.error('Error creating post:', error);
+    } else {
+      navigate('/');
+    }
   };
-  
+
+  return (
+    <div className="create-post">
+      <h1>Create a New Post</h1>
+      <form onSubmit={handleSubmit}>
+        <label>Title:</label>
+        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
+
+        <label>Content:</label>
+        <textarea value={content} onChange={(e) => setContent(e.target.value)} required />
+
+        <label>Upload Image:</label>
+        <input type="file" accept="image/*" onChange={handleFileChange} />
+
+        <button type="submit">Create Post</button>
+      </form>
+    </div>
+  );
+};
+
 export default CreatePost;

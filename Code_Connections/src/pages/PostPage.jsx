@@ -3,6 +3,8 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { supabase } from '../client';
 import { DateTime } from "luxon";
 import { useAuth } from '../AuthContext';
+import { db } from '../firebase';
+import { doc, getDoc } from 'firebase/firestore';
 
 const PostPage = () => {
   const { id } = useParams();
@@ -11,6 +13,7 @@ const PostPage = () => {
   const [post, setPost] = useState(null);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
+  const [profilePicture, setProfilePicture] = useState(null);
 
   const fetchPost = async () => {
     const { data, error } = await supabase
@@ -21,6 +24,17 @@ const PostPage = () => {
 
     if (!error) {
       setPost(data);
+      fetchProfilePicture(data.owner_id);
+    }
+  };
+
+  const fetchProfilePicture = async (ownerId) => {
+    if (!ownerId) return;
+    const userRef = doc(db, 'users', ownerId);
+    const userSnap = await getDoc(userRef);
+
+    if (userSnap.exists()) {
+      setProfilePicture(userSnap.data().profilePicture);
     }
   };
 
@@ -36,35 +50,9 @@ const PostPage = () => {
     }
   };
 
-  const handleUpvote = async () => {
-    const { data, error } = await supabase
-      .from('posts')
-      .update({ upvotes: post.upvotes + 1 })
-      .eq('id', id)
-      .select()
-      .single();
-
-    if (!error) {
-      setPost(data);
-    }
-  };
-
-  const handleAddComment = async (e) => {
-    e.preventDefault();
-    if (!newComment.trim()) {
-      return;
-    }
-    const { data, error } = await supabase
-      .from('comments')
-      .insert([{ post_id: id, content: newComment }]);
-
-    if (!error) {
-      setComments([...comments, data[0]]);
-      setNewComment('');
-    }
-  };
-
   const handleDeletePost = async () => {
+    if (!post || user?.uid !== post.owner_id) return;
+
     const { error } = await supabase
       .from('posts')
       .delete()
@@ -83,7 +71,7 @@ const PostPage = () => {
     if (post) {
       fetchComments();
     }
-  }, []);
+  }, [post]);
 
   if (!post) {
     return <p>Loading post...</p>;
@@ -96,16 +84,26 @@ const PostPage = () => {
   return (
     <div className="post-page">
       <h1>{post.title}</h1>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        
+        <p><strong>Posted by:</strong> {post.owner_name || "Unknown"}</p>
+        {profilePicture && (
+          <img 
+            src={profilePicture} 
+            alt="Profile" 
+            style={{ width: '35px', height: '35px', borderRadius: '50%', marginBottom: '35px'}} 
+          />
+        )}
+      </div>
       <p>Posted on: {formattedDate}</p>
       {post.image_url && <img src={post.image_url} alt="Post" />}
       <p>{post.content}</p>
 
       <div className="upvote-section">
-        <button onClick={handleUpvote}>Upvote</button>
         <span>Upvotes: {post.upvotes}</span>
       </div>
 
-      {user && (
+      {user && user.uid === post.owner_id && (
         <div className="post-actions">
           <Link to={`/update/${post.id}`} className="edit-link">Edit Post</Link>
           <button onClick={handleDeletePost} className="delete-button">Delete Post</button>
@@ -114,18 +112,10 @@ const PostPage = () => {
 
       <div className="comments-section">
         <h2>Comments</h2>
-        <form onSubmit={handleAddComment}>
-          <textarea
-            value={newComment}
-            onChange={(e) => setNewComment(e.target.value)}
-            placeholder="Add a comment..."
-            required
-          ></textarea>
+        <form>
+          <textarea value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder="Add a comment..." required></textarea>
         </form>
-
-        {comments.length === 0 ? (
-          <p>No comments yet.</p>
-        ) : (
+        {comments.length === 0 ? <p>No comments yet.</p> : (
           comments.map(comment => {
             const formattedCommentDate = DateTime.fromISO(comment.created_at)
               .setZone("America/New_York")
