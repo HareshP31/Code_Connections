@@ -66,7 +66,6 @@ const PostPage = () => {
         console.error('Error deleting post:', error);
       }
     }
-  };
 
   useEffect(() => {
     fetchPost();
