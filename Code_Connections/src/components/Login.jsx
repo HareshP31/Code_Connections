@@ -41,12 +41,14 @@ function Login() {
                     type="text"
                     placeholder="Username or Email"
                     onChange={(e) => setIdentifier(e.target.value)}
+                    required
                 />
                 <br />
                 <input
                     type="password"
                     placeholder="Password"
                     onChange={(e) => setPassword(e.target.value)}
+                    required
                 />
                 <br />
                 <br />

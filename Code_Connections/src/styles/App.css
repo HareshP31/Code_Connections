@@ -6,7 +6,7 @@ body {
   padding: 0;
   padding-top: 70px;
   color: gold;
-  background-color: 15, 15, 15;
+  background-color: rgb(15, 15, 15);
 }
 
 .navbar {
@@ -17,7 +17,7 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 10%;
+  height: 60px;
   position: fixed;
   top: 0;
   left: 0;
@@ -26,7 +26,7 @@ body {
 
 .nav-link {
   color: black;
-  border: solid, 3px, black;
+  border: 3px solid black;
   border-radius: 5px;
   padding: 5px;
   background-color: gold;
@@ -87,6 +87,45 @@ body {
   border-radius: 4px;
 }
 
+.post-page {
+  display: flex;
+  flex-direction: row;
+  gap: 25px;
+}
+
+.post-image {
+  flex-shrink: 0;
+}
+
+.post-content {
+  max-width: 400px;
+  height: auto;
+}
+
+.post-image img{
+  width: 100%;
+  height: auto;
+  max-width: 500px;
+  display: block;
+  object-fit: cover;
+}
+
+.header-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.edit-link {
+  padding: 10px;
+}
+
+.post-interactions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .post-page h1 {
   margin-bottom: 50px;
 }
@@ -103,14 +142,13 @@ body {
   cursor: pointer;
 }
 
-.post-image {
-  width: 100%;
-  height: auto;
-  max-width: 250px;
-}
-
 .delete-button {
-  margin-left: 20px;
+  max-width: 100px;
+  height: auto;
+  word-wrap: break-word;
+  text-align: center;
+  font-size: 1rem;
+  padding: 10px;
 }
 
 .view-post-link {
@@ -123,7 +161,7 @@ body {
   text-decoration: underline;
 }
 
-.create-post, .update-post, .post-page {
+.create-post, .update-post {
   max-width: 600px;
   margin: auto;
 }
@@ -145,11 +183,11 @@ button {
   cursor: pointer;
   color: black;
   background-color: gold;
-  border: solid, 5px, black;
+  border: 5px solid black;
 }
 
 button:hover {
-  border: solid, 5px, white;
+  border: 5px solid white;
 }
 
 .delete-button {

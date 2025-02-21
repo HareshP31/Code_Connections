@@ -58,8 +58,13 @@ const PostPage = () => {
       .delete()
       .eq('id', id);
 
-    if (!error) {
-      navigate('/');
+      if (!error) {
+        navigate('/');
+      }
+      else 
+      {
+        console.error('Error deleting post:', error);
+      }
     }
   };
 
