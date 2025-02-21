@@ -108,6 +108,7 @@ body {
   max-width: 500px;
   display: block;
   object-fit: cover;
+  flex-shrink: 0;
 }
 
 .header-info {
@@ -124,6 +125,8 @@ body {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  border: 2px solid white;
+  padding: 40px;
 }
 
 .post-page h1 {

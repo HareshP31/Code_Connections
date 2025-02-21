@@ -87,52 +87,64 @@ const PostPage = () => {
 
   return (
     <div className="post-page">
-      <h1>{post.title}</h1>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-        
-        <p><strong>Posted by:</strong> {post.owner_name || "Unknown"}</p>
-        {profilePicture && (
-          <img 
-            src={profilePicture} 
-            alt="Profile" 
-            style={{ width: '35px', height: '35px', borderRadius: '50%', marginBottom: '35px'}} 
-          />
-        )}
-      </div>
-      <p>Posted on: {formattedDate}</p>
-      {post.image_url && <img src={post.image_url} alt="Post" />}
-      <p>{post.content}</p>
-
-      <div className="upvote-section">
-        <span>Upvotes: {post.upvotes}</span>
-      </div>
-
-      {user && user.uid === post.owner_id && (
-        <div className="post-actions">
-          <Link to={`/update/${post.id}`} className="edit-link">Edit Post</Link>
-          <button onClick={handleDeletePost} className="delete-button">Delete Post</button>
+        <div className="post-interactions">
+        <div className="header-info">
+          <h1>{post.title}</h1>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            
+            <h3>Posted by: {post.owner_name || "Unknown"}</h3>
+            {profilePicture && (
+              <img 
+                src={profilePicture} 
+                alt="Profile" 
+                style={{ width: '35px', height: '35px', borderRadius: '50%', marginBottom: '35px'}} 
+              />
+            )}
+          </div>
+          <h3>Posted on: {formattedDate}</h3>
         </div>
-      )}
+        <div className="upvote-section">
+          <span>Upvotes: {post.upvotes}</span>
+        </div>
 
-      <div className="comments-section">
-        <h2>Comments</h2>
-        <form>
-          <textarea value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder="Add a comment..." required></textarea>
-        </form>
-        {comments.length === 0 ? <p>No comments yet.</p> : (
-          comments.map(comment => {
-            const formattedCommentDate = DateTime.fromISO(comment.created_at)
-              .setZone("America/New_York")
-              .toLocaleString(DateTime.DATETIME_MED);
-            return (
-              <div key={comment.id} className="comment">
-                <p>{comment.content}</p>
-                <small>Posted on: {formattedCommentDate}</small>
-              </div>
-            );
-          })
+        {user && user.uid === post.owner_id && (
+          <div className="post-actions">
+            <Link to={`/update/${post.id}`} className="edit-link">Edit Post</Link>
+            <button onClick={handleDeletePost} className="delete-button">Delete Post</button>
+          </div>
         )}
+
+        <div className="comments-section">
+          <h2>Comments</h2>
+          <form>
+            <textarea value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder="Add a comment..." required></textarea>
+          </form>
+          {comments.length === 0 ? <p>No comments yet.</p> : (
+            comments.map(comment => {
+              const formattedCommentDate = DateTime.fromISO(comment.created_at)
+                .setZone("America/New_York")
+                .toLocaleString(DateTime.DATETIME_MED);
+              return (
+                <div key={comment.id} className="comment">
+                  <p>{comment.content}</p>
+                  <small>Posted on: {formattedCommentDate}</small>
+                </div>
+              );
+            })
+          )}
+        </div>
       </div>
+
+      <div className="post-content">
+        <p>{post.content}</p>
+      </div>
+      
+      <div className="post-image">
+        {post.image_url && <img src={post.image_url} alt="Post" />}
+      </div>
+
+      
+      
     </div>
   );
 };
