@@ -100,12 +100,14 @@ body {
 .post-content {
   max-width: 400px;
   height: auto;
+  word-wrap: break-word;
 }
 
 .post-image img{
   width: 100%;
   height: auto;
   max-width: 500px;
+  max-height: 550px;
   display: block;
   object-fit: cover;
   flex-shrink: 0;

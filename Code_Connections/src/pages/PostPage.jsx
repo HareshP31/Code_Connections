@@ -50,6 +50,48 @@ const PostPage = () => {
     }
   };
 
+  const handleAddComment = async () => {
+    if (!user) return; 
+    
+    if (newComment.trim() === "") {
+      alert("Comment cannot be empty!");
+      return;
+    }
+  
+    const { data, error } = await supabase
+      .from('comments')
+      .insert([{ 
+        post_id: id, 
+        content: newComment, 
+        created_at: new Date().toISOString(),
+        owner_id: user.uid, 
+        owner_name: user.username 
+      }]);
+  
+    if (error) {
+      console.error("Error adding comment:", error);
+    } else {
+      setNewComment(""); 
+      fetchComments(); 
+    }
+  };
+
+  const handleUpvote = async () => {
+    const { data, error } = await supabase
+      .from('posts')
+      .update({ upvotes: post.upvotes + 1 })
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error upvoting:', error);
+    } 
+    else {
+      setPost(data);
+    }
+  };
+
   const handleDeletePost = async () => {
     if (!post || user?.uid !== post.owner_id) return;
 
@@ -104,6 +146,7 @@ const PostPage = () => {
           <h3>Posted on: {formattedDate}</h3>
         </div>
         <div className="upvote-section">
+          <button onClick={handleUpvote}>Upvote</button>
           <span>Upvotes: {post.upvotes}</span>
         </div>
 
@@ -116,9 +159,21 @@ const PostPage = () => {
 
         <div className="comments-section">
           <h2>Comments</h2>
-          <form>
-            <textarea value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder="Add a comment..." required></textarea>
-          </form>
+
+          {user ? (
+            <div>
+              <textarea 
+                value={newComment} 
+                onChange={(e) => setNewComment(e.target.value)} 
+                placeholder="Add a comment..." 
+                required
+              />
+              <button onClick={handleAddComment}>Post Comment</button>
+            </div>
+          ) : (
+            <p>You must be logged in to comment.</p>
+          )}
+
           {comments.length === 0 ? <p>No comments yet.</p> : (
             comments.map(comment => {
               const formattedCommentDate = DateTime.fromISO(comment.created_at)
@@ -126,6 +181,7 @@ const PostPage = () => {
                 .toLocaleString(DateTime.DATETIME_MED);
               return (
                 <div key={comment.id} className="comment">
+                  <p>Posted by: {comment.owner_name || "Unknown"}</p>
                   <p>{comment.content}</p>
                   <small>Posted on: {formattedCommentDate}</small>
                 </div>

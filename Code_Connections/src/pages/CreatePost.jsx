@@ -72,7 +72,7 @@ const CreatePost = () => {
         <label>Title:</label>
         <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
 
-        <label>Content:</label>
+        <label>Content: (Drag bottom right of box to make it bigger)</label>
         <textarea value={content} onChange={(e) => setContent(e.target.value)} required />
 
         <label>Upload Image:</label>

@@ -92,6 +92,7 @@ function Register() {
                         placeholder="Username"
                         value={username}
                         onChange={(e) => validateUsername(e.target.value)}
+                        required
                     />
                     <div className={`error ${errors.username ? 'show' : ''}`}>{errors.username}</div>
                 </div>
@@ -103,6 +104,7 @@ function Register() {
                         placeholder="Email"
                         value={email}
                         onChange={(e) => validateEmail(e.target.value)}
+                        required
                     />
                     <div className={`error ${errors.email ? 'show' : ''}`}>{errors.email}</div>
                 </div>
@@ -114,6 +116,7 @@ function Register() {
                         placeholder="Password"
                         value={password}
                         onChange={(e) => validatePassword(e.target.value)}
+                        required
                     />
                     <div className={`error ${errors.password ? 'show' : ''}`}>{errors.password}</div>
                 </div>
