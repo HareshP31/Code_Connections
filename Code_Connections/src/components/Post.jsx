@@ -4,7 +4,7 @@ import { DateTime } from "luxon";
 import { db } from '../firebase';
 import { doc, getDoc } from 'firebase/firestore';
 
-const Post = ({ post }) => {
+const Post = ({ post, viewMode }) => {
   const [profilePicture, setProfilePicture] = useState(null);
 
   useEffect(() => {
@@ -25,24 +25,35 @@ const Post = ({ post }) => {
     .setZone("America/New_York")
     .toLocaleString(DateTime.DATETIME_MED);
 
-  return (
-    <div className="post-card">
-      <h2>{post.title}</h2>
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-      <p>Posted by: {post.owner_name || "Unknown"}</p>
-        {profilePicture && (
-          <img 
-            src={profilePicture} 
-            alt="Profile" 
-            style={{ width: '30px', height: '30px', borderRadius: '50%' }} 
-          />
-        )}
+    return (
+      <div className={`post-card ${viewMode}`}>
+        <div className="card-header">
+          {profilePicture && (
+            <img 
+              src={profilePicture} 
+              alt="Profile" 
+              className="profile-picture" 
+              style={{ width: '40px', height: '40px' }}
+            />
+          )}
+          <h2>{post.title}</h2>
+        </div>
+        
+        <div className="post-details">
+          <p className="post-meta">
+            <span>By {post.owner_name || "Unknown"}</span>
+            <span>•</span>
+            <span>{formattedDate}</span>
+          </p>
+          <div className="upvotes-section">
+            ▲ {post.upvotes}
+          </div>
+          <Link to={`/post/${post.id}`} className="view-post-link">
+            {viewMode === 'card' ? 'Read More →' : 'View Post'}
+          </Link>
+        </div>
       </div>
-      <p>Posted on: {formattedDate}</p>
-      <p>Upvotes: {post.upvotes}</p>
-      <Link to={`/post/${post.id}`} className="view-post-link">View Post</Link>
-    </div>
-  );
-};
+    );
+  }
 
 export default Post;
