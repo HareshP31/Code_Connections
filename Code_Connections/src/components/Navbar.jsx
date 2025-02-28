@@ -21,11 +21,11 @@ const Navbar = () => {
 
   return (
     <nav className="navbar">
-      <Link to="/" className="nav-link">Home</Link>
+      <button onClick={() => navigate('/')} className="nav-link">Home</button>
       {user && (
-        <Link to="/create" className="nav-link">Create Post</Link>
+        <button  onClick={() => navigate('/create')} className="nav-link">Create Post</button>
       )}
-      <form onSubmit={handleSearch} className="search-form">
+      <form onSubmit={handleSearch} className="search-form" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
         <input
           type="text"
           placeholder="Search by title..."

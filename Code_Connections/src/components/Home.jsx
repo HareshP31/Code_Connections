@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "../client";
 import Post from "./Post";
 import { useLocation } from "react-router-dom";
-import '../styles/App.css';
+import "../styles/App.css";
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -61,14 +61,14 @@ const Home = () => {
         </button>
       </div>
       {posts.length === 0 ? (
-  <p>No posts found.</p>
-) : (
-  <div className={`posts-container ${viewMode}`}>
-    {posts.map(post => (
-      <Post key={post.id} post={post} viewMode={viewMode} />
-    ))}
-  </div>
-)}
+        <p>No posts found.</p>
+      ) : (
+        <div className={`posts-container ${viewMode}`}>
+          {posts.map((post) => (
+            <Post key={post.id} post={post} viewMode={viewMode} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };
