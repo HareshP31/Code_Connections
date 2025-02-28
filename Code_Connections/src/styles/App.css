@@ -211,6 +211,13 @@ body {
   cursor: pointer;
 }
 
+.upvoted {
+  background-color: rgb(6, 204, 6);
+  margin-right: 20px;
+  padding: 0.7rem 1.2rem;
+  cursor: pointer;
+}
+
 .delete-button {
   max-width: 100px;
   height: auto;

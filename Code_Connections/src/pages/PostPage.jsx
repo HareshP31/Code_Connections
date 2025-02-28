@@ -14,6 +14,7 @@ const PostPage = () => {
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
   const [profilePicture, setProfilePicture] = useState(null);
+  const [hasUpvoted, setHasUpvoted] = useState(false);
 
   const fetchPost = async () => {
     const { data, error } = await supabase
@@ -24,7 +25,11 @@ const PostPage = () => {
 
     if (!error) {
       setPost(data);
-      fetchProfilePicture(data.owner_id);
+  
+      const storedUpvotes = JSON.parse(localStorage.getItem("upvotedPosts")) || {};
+      if (user) {
+        setHasUpvoted(storedUpvotes[user.uid]?.[id] || false);
+      }
     }
   };
 
@@ -77,18 +82,30 @@ const PostPage = () => {
   };
 
   const handleUpvote = async () => {
+    if (!user) return;
+  
+    const newUpvoteCount = hasUpvoted ? post.upvotes - 1 : post.upvotes + 1;
+  
     const { data, error } = await supabase
       .from('posts')
-      .update({ upvotes: post.upvotes + 1 })
+      .update({ upvotes: newUpvoteCount })
       .eq('id', id)
       .select()
       .single();
-
-    if (error) {
-      console.error('Error upvoting:', error);
-    } 
-    else {
+  
+    if (!error) {
       setPost(data);
+      setHasUpvoted(!hasUpvoted);
+  
+      let storedUpvotes = JSON.parse(localStorage.getItem("upvotedPosts")) || {};
+  
+      if (!storedUpvotes[user.uid]) {
+        storedUpvotes[user.uid] = {};
+      }
+  
+      storedUpvotes[user.uid][id] = !hasUpvoted;
+      
+      localStorage.setItem("upvotedPosts", JSON.stringify(storedUpvotes));
     }
   };
 
@@ -149,7 +166,12 @@ const PostPage = () => {
           <h3>Posted on: {formattedDate}</h3>
         </div>
         <div className="upvote-section">
-          <button onClick={handleUpvote}>Upvote</button>
+          <button 
+            onClick={handleUpvote} 
+            className={`upvote-button ${hasUpvoted ? 'upvoted' : ''}`}
+          >
+            Upvote
+          </button>
           <span>Upvotes: {post.upvotes}</span>
         </div>
 
