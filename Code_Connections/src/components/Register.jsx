@@ -52,11 +52,12 @@ function Register() {
     const validatePassword = (value) => {
         const hasLetter = /[a-zA-Z]/.test(value);
         const hasNumber = /[0-9]/.test(value);
-
-        if (!hasLetter || !hasNumber) {
+        const isValidLength = value.length >= 8;
+    
+        if (!hasLetter || !hasNumber || !isValidLength) {
             setErrors((prev) => ({
                 ...prev,
-                password: 'Password must contain both letters and numbers.',
+                password: 'Password must be at least 8 characters long and contain both letters and numbers.',
             }));
         } else {
             setErrors((prev) => ({ ...prev, password: '' }));
