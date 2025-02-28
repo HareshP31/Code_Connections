@@ -50,11 +50,22 @@ const PostPage = () => {
       .select('*')
       .eq('post_id', id)
       .order('created_at', { ascending: true });
-
+  
     if (!error) {
-      setComments(data);
+      const commentsWithPFP = await Promise.all(data.map(async (comment) => {
+        const userRef = doc(db, 'users', comment.owner_id);
+        const userSnap = await getDoc(userRef);
+  
+        return {
+          ...comment,
+          profilePicture: userSnap.exists() ? userSnap.data().profilePicture : '/default-pfp.png'
+        };
+      }));
+  
+      setComments(commentsWithPFP);
     }
   };
+  
 
   const handleAddComment = async () => {
     if (!user) return; 
@@ -160,7 +171,7 @@ const PostPage = () => {
               <img 
                 src={profilePicture} 
                 alt="Profile" 
-                style={{ width: '35px', height: '35px', borderRadius: '50%', marginBottom: '5px'}} 
+                style={{ width: '35px', height: '35px', borderRadius: '50%', marginBottom: '3px'}} 
               />
             )}
           </div>
@@ -206,10 +217,17 @@ const PostPage = () => {
                 .setZone("America/New_York")
                 .toLocaleString(DateTime.DATETIME_MED);
               return (
-                <div key={comment.id} className="comment">
-                  <p>Posted by: {comment.owner_name || "Unknown"}</p>
-                  <p>{comment.content}</p>
-                  <small>Posted on: {formattedCommentDate}</small>
+                <div key={comment.id} className="comment" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div>
+                    <p  style={{ display: 'inline-block'}}>Posted by: {comment.owner_name || "Unknown"}</p>
+                    <img 
+                    src={comment.profilePicture} 
+                    alt="Profile" 
+                    style={{ width: '30px', height: '30px', borderRadius: '50%', marginBottom: '-10px', marginLeft: '10px' }} 
+                  />
+                    <p>{comment.content}</p>
+                    <small>Posted on: {formattedCommentDate}</small>
+                  </div>
                 </div>
               );
             })
