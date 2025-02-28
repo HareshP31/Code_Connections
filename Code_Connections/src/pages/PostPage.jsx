@@ -25,6 +25,7 @@ const PostPage = () => {
 
     if (!error) {
       setPost(data);
+      fetchProfilePicture(data.owner_id);
   
       const storedUpvotes = JSON.parse(localStorage.getItem("upvotedPosts")) || {};
       if (user) {
