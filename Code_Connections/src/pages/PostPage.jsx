@@ -95,6 +95,9 @@ const PostPage = () => {
   const handleDeletePost = async () => {
     if (!post || user?.uid !== post.owner_id) return;
 
+    const confirmDelete = window.confirm("Are you sure you want to delete this post?");
+    if (!confirmDelete) return;
+
     const { error } = await supabase
       .from('posts')
       .delete()
@@ -107,7 +110,7 @@ const PostPage = () => {
       {
         console.error('Error deleting post:', error);
       }
-    }
+  }
 
   useEffect(() => {
     fetchPost();
