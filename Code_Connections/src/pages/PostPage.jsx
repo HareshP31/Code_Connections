@@ -139,7 +139,7 @@ const PostPage = () => {
               <img 
                 src={profilePicture} 
                 alt="Profile" 
-                style={{ width: '35px', height: '35px', borderRadius: '50%', marginBottom: '35px'}} 
+                style={{ width: '35px', height: '35px', borderRadius: '50%', marginBottom: '5px'}} 
               />
             )}
           </div>
