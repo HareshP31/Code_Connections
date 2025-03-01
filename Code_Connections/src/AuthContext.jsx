@@ -1,7 +1,7 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import { auth } from './firebase';
 import { onAuthStateChanged, signOut, setPersistence, browserSessionPersistence } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc, serverTimestamp } from 'firebase/firestore';
 import { db } from './firebase';
 
 const AuthContext = createContext();
@@ -26,23 +26,25 @@ export const AuthProvider = ({ children }) => {
                     const userRef = doc(db, 'users', currentUser.uid);
                     const userDoc = await getDoc(userRef);
 
+                    let userData = {
+                        uid: currentUser.uid,
+                        email: currentUser.email,
+                        username: currentUser.displayName || 'User',
+                        profilePicture: currentUser.photoURL || 'https://cdn.pfps.gg/pfps/2301-default-2.png',
+                    };
+
                     if (userDoc.exists()) {
-                        const userData = userDoc.data();
-                        setUser({
-                            uid: currentUser.uid,
-                            email: currentUser.email,
-                            username: userData.username || currentUser.displayName || 'User',
-                            profilePicture: userData.profilePicture || currentUser.photoURL || 'https://cdn.pfps.gg/pfps/2301-default-2.png',
-                            bio: userData.bio || '',
-                        });
-                    } else {
-                        setUser({
-                            uid: currentUser.uid,
-                            email: currentUser.email,
-                            username: currentUser.displayName || 'User',
-                            profilePicture: currentUser.photoURL || 'https://cdn.pfps.gg/pfps/2301-default-2.png',
-                        });
+                        userData = { ...userData, ...userDoc.data() };
                     }
+
+                    setUser(userData);
+
+                    // ✅ Update lastSeen timestamp in Firestore
+                    await updateDoc(userRef, {
+                        lastSeen: serverTimestamp(),
+                    });
+
+                    console.log(`✅ Last seen updated for ${currentUser.uid}`);
                 } catch (error) {
                     console.error('Error fetching user data:', error);
                 }
@@ -55,11 +57,9 @@ export const AuthProvider = ({ children }) => {
         return () => unsubscribe();
     }, []);
 
-    
     const login = (userData) => {
         setUser(userData);
     };
-
 
     const logout = async () => {
         try {
