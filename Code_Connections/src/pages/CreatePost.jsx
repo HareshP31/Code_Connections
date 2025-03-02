@@ -3,16 +3,36 @@ import { supabase } from '../client';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 
+const pLanguages = [ "JavaScript", "Python", "Java", "C++", "C#", "Ruby", "Go", "Swift", "Kotlin", "Rust", "PHP", "TypeScript", "React", "Godot", "Unity", "Arduino", "Flask", ];
+
 const CreatePost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [imageFile, setImageFile] = useState(null);
+  const [pSearchTerm, setpSearchTerm] = useState('');
+  const [selectedLanguages, setSelectedLanguages] = useState([]);
   const navigate = useNavigate();
   const { user } = useAuth(); 
 
   const handleFileChange = (e) => {
     setImageFile(e.target.files[0]);
   };
+
+  const handleLanguageSelect = (selectedLanguage) => {
+    if (!selectedLanguages.includes(selectedLanguage)) {
+      setSelectedLanguages([...selectedLanguages, selectedLanguage]);
+    }
+    setpSearchTerm('');
+  };
+
+  const handleRemoveLanguage = (lang) => {
+    setSelectedLanguages(selectedLanguages.filter(l => l !== lang));
+  };
+
+  const filteredLanguages = pLanguages.filter(lang =>
+    lang.toLowerCase().includes(pSearchTerm.toLowerCase()) &&
+    !selectedLanguages.includes(lang)
+  );
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -54,7 +74,8 @@ const CreatePost = () => {
           created_at: new Date().toISOString(), 
           image_url: imageUrl,
           owner_id: user.uid, 
-          owner_name: user.username 
+          owner_name: user.username,
+          language_flair: selectedLanguages
         }
       ]);
 
@@ -77,6 +98,31 @@ const CreatePost = () => {
 
         <label>Upload Image:</label>
         <input type="file" accept="image/*" onChange={handleFileChange} />
+
+        <label>Programming Language:</label>
+        <input
+          type="text"
+          placeholder="Search for a language..."
+          value={pSearchTerm}
+          onChange={(e) => setpSearchTerm(e.target.value)}
+        />
+        {pSearchTerm && (
+          <ul className="planguage-dropdown">
+            {filteredLanguages.map((lang) => (
+              <li key={lang} onClick={() => handleLanguageSelect(lang)}>
+                {lang}
+              </li>
+            ))}
+          </ul>
+        )}
+
+        <div className="selected-languages">
+          {selectedLanguages.map(lang => (
+            <span key={lang} className="selected-tag">
+              {lang} <button type="button" onClick={() => handleRemoveLanguage(lang)}>✖</button>
+            </span>
+          ))}
+        </div>
 
         <button type="submit">Create Post</button>
       </form>

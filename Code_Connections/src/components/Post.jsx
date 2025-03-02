@@ -48,6 +48,13 @@ const Post = ({ post, viewMode }) => {
           <div className="upvotes-section">
             ▲ {post.upvotes}
           </div>
+          {Array.isArray(post.language_flair) && post.language_flair.length > 0 && (
+            <div className="flair-tags">
+              {post.language_flair.map(lang => (
+                <span key={lang} className="flair-tag">{lang}</span>
+              ))}
+            </div>
+          )}
           <Link to={`/post/${post.id}`} className="view-post-link">
             {viewMode === 'card' ? 'Read More →' : 'View Post'}
           </Link>
