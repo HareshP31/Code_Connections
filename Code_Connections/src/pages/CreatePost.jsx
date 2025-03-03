@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { supabase } from '../client';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const CreatePost = () => {
   const [title, setTitle] = useState('');
@@ -12,6 +14,20 @@ const CreatePost = () => {
 
   const handleFileChange = (e) => {
     setImageFile(e.target.files[0]);
+  };
+
+
+  const incrementUserPostCount = async (userId) => {
+    const userRef = doc(db, "users", userId);
+    try {
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        const currentPosts = userSnap.data().numberOfPosts || 0;
+        await updateDoc(userRef, { numberOfPosts: currentPosts + 1 });
+      }
+    } catch (err) {
+      console.error("Error updating user post count:", err);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -61,6 +77,8 @@ const CreatePost = () => {
     if (error) {
       console.error('Error creating post:', error);
     } else {
+
+      await incrementUserPostCount(user.uid);
       navigate('/');
     }
   };

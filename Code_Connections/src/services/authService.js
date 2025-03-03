@@ -29,12 +29,15 @@ export const registerUser = async (email, password, username) => {
 
         await updateProfile(user, { displayName: username });
 
+        // ✅ Add user to Firestore with `numberOfPosts: 0`
         await setDoc(doc(db, 'users', user.uid), {
             uid: user.uid,
             username: username,
             email: email,
             profilePicture: DEFAULT_PROFILE_PICTURE,
             bio: '',
+            numberOfPosts: 0, // ✅ Initialize numberOfPosts
+            lastSeen: new Date() // ✅ Set last seen to the current time
         });
 
         return {
@@ -47,6 +50,7 @@ export const registerUser = async (email, password, username) => {
         throw new Error(error.message);
     }
 };
+
 
 
 export const loginWithGoogle = async () => {
@@ -62,12 +66,15 @@ export const loginWithGoogle = async () => {
             const displayName = user.displayName || 'Google_User';
             const profilePicture = user.photoURL || 'https://cdn.pfps.gg/pfps/2301-default-2.png';
 
+            // ✅ New users signing in with Google also get `numberOfPosts: 0`
             await setDoc(userDocRef, {
                 uid: user.uid,
                 username: displayName,
                 email: user.email,
                 profilePicture: profilePicture,
                 bio: '',
+                numberOfPosts: 0, // ✅ Initialize numberOfPosts for Google users
+                lastSeen: new Date()
             });
         }
 
@@ -81,6 +88,7 @@ export const loginWithGoogle = async () => {
         throw new Error(error.message);
     }
 };
+
 
 
 export const loginUser = async (identifier, password) => {

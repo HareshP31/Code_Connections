@@ -1,18 +1,20 @@
 import React, { useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const OwnerDetailsModal = ({ ownerDetails, onClose }) => {
   if (!ownerDetails) return null;
 
-  const modalRef = useRef(null); // Reference for modal content
+  const navigate = useNavigate();
+  const modalRef = useRef(null);
 
-  // Function to handle clicks outside the modal content
+
   const handleClickOutside = (event) => {
     if (modalRef.current && !modalRef.current.contains(event.target)) {
-      onClose(); // Close the modal
+      onClose();
     }
   };
 
-  // Attach event listener when modal is open
+
   useEffect(() => {
     document.addEventListener('mousedown', handleClickOutside);
     return () => {
@@ -20,19 +22,24 @@ const OwnerDetailsModal = ({ ownerDetails, onClose }) => {
     };
   }, []);
 
-  // Convert Firestore timestamp to a readable format (without seconds)
-  const formatLastSeen = (timestamp) => {
-    if (!timestamp) return "Unknown"; // Handle missing timestamp
 
-    const date = new Date(timestamp.seconds * 1000); // Convert Firestore timestamp
+  const formatLastSeen = (timestamp) => {
+    if (!timestamp) return "Unknown"; 
+
+    const date = new Date(timestamp.seconds * 1000); 
     return date.toLocaleString(undefined, {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
       hour: '2-digit',
       minute: '2-digit',
-      hour12: true, // Ensures AM/PM format
+      hour12: true,
     }); 
+  };
+
+  const goToProfile = () => {
+    navigate(`/users/${ownerDetails.username}`);
+    onClose();
   };
 
   return (
@@ -66,32 +73,35 @@ const OwnerDetailsModal = ({ ownerDetails, onClose }) => {
 
         {/* Header: Profile Picture, Username, View Profile & Last Seen */}
         <div className="modal-header" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-          {/* Profile Picture */}
+          {/* ✅ Profile Picture Clickable */}
           {ownerDetails.profilePicture && (
             <img 
               src={ownerDetails.profilePicture} 
               alt="Profile" 
               className="profile-picture" 
-              style={{ width: '100px', height: '100px', borderRadius: '50%' }}
+              style={{ width: '100px', height: '100px', borderRadius: '50%', cursor: 'pointer' }} 
+              onClick={goToProfile} 
             />
           )}
 
-          {/* User Info */}
+
           <div>
-            {/* Username */}
+
             <h2 style={{ margin: 0, fontSize: '20px' }}>
               {ownerDetails.username}
             </h2>
 
-            {/* View Profile Link */}
-            <a
-                style={{ margin: '5px 0', fontSize: '14px', cursor: 'pointer' }}
-                onMouseEnter={(e) => e.target.style.textDecoration = 'underline'} // Add underline on hover
-                onMouseLeave={(e) => e.target.style.textDecoration = 'none'} >
-              View Profile
-            </a>
 
-            {/* Last Seen */}
+            <p 
+              onClick={goToProfile} 
+              style={{ margin: '5px 0', fontSize: '14px', cursor: 'pointer', color: 'inherit' }}
+              onMouseEnter={(e) => e.target.style.textDecoration = 'underline'} 
+              onMouseLeave={(e) => e.target.style.textDecoration = 'none'} 
+            >
+              View Profile
+            </p>
+
+
             <p style={{ margin: 0, color: 'white', fontSize: '14px' }}>
               <strong>Last Seen:</strong> {formatLastSeen(ownerDetails.lastSeen)}
             </p>

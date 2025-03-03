@@ -4,7 +4,8 @@ import { supabase } from '../client';
 import { DateTime } from "luxon";
 import { useAuth } from '../AuthContext';
 import { db } from '../firebase';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+
 
 const PostPage = () => {
   const { id } = useParams();
@@ -123,23 +124,46 @@ const PostPage = () => {
 
   const handleDeletePost = async () => {
     if (!post || user?.uid !== post.owner_id) return;
-
+  
     const confirmDelete = window.confirm("Are you sure you want to delete this post?");
     if (!confirmDelete) return;
-
+  
     const { error } = await supabase
       .from('posts')
       .delete()
       .eq('id', id);
-
-      if (!error) {
-        navigate('/');
+  
+    if (!error) {
+      try {
+        console.log("Post deleted successfully. Updating Firestore...");
+  
+        const userRef = doc(db, "users", post.owner_id);
+        const userSnap = await getDoc(userRef);
+  
+        if (userSnap.exists()) {
+          const currentPosts = userSnap.data().numberOfPosts || 0;
+          const newPostCount = Math.max(currentPosts - 1, 0);
+  
+          console.log(`Current posts: ${currentPosts}, New posts: ${newPostCount}`);
+  
+          await updateDoc(userRef, { numberOfPosts: newPostCount });
+  
+          console.log("Firestore successfully updated!");
+        } else {
+          console.error("User document not found in Firestore.");
+        }
+      } catch (err) {
+        console.error("Error updating user post count:", err);
       }
-      else 
-      {
-        console.error('Error deleting post:', error);
-      }
-  }
+  
+      navigate('/');
+    } else {
+      console.error('Error deleting post:', error);
+    }
+  };
+  
+  
+  
 
   useEffect(() => {
     fetchPost();
