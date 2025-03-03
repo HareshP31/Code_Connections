@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 
 const pLanguages = [ "JavaScript", "Python", "Java", "C++", "C#", "Ruby", "Go", "Swift", "Kotlin", "Rust", "PHP", "TypeScript", "React", "Godot", "Unity", "Arduino", "Flask", ];
+const pCategories = ["Beginner", "Advanced", "AI/Machine Learning", "Game", "Educational", "Virtual Reality", "Computer Vision", "Embedded Systems"]
 
 const CreatePost = () => {
   const [title, setTitle] = useState('');
@@ -11,11 +12,18 @@ const CreatePost = () => {
   const [imageFile, setImageFile] = useState(null);
   const [pSearchTerm, setpSearchTerm] = useState('');
   const [selectedLanguages, setSelectedLanguages] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const navigate = useNavigate();
   const { user } = useAuth(); 
 
   const handleFileChange = (e) => {
     setImageFile(e.target.files[0]);
+  };
+
+  const toggleTag = (tag) => {
+    setSelectedCategories((prevTags) =>
+      prevTags.includes(tag) ? prevTags.filter(t => t !== tag) : [...prevTags, tag]
+    );
   };
 
   const handleLanguageSelect = (selectedLanguage) => {
@@ -75,7 +83,8 @@ const CreatePost = () => {
           image_url: imageUrl,
           owner_id: user.uid, 
           owner_name: user.username,
-          language_flair: selectedLanguages
+          language_flair: selectedLanguages,
+          categories: selectedCategories
         }
       ]);
 
@@ -102,7 +111,7 @@ const CreatePost = () => {
         <label>Programming Language:</label>
         <input
           type="text"
-          placeholder="Search for a language..."
+          placeholder="Begin typing..."
           value={pSearchTerm}
           onChange={(e) => setpSearchTerm(e.target.value)}
         />
@@ -121,6 +130,20 @@ const CreatePost = () => {
             <span key={lang} className="selected-tag">
               {lang} <button type="button" onClick={() => handleRemoveLanguage(lang)}>✖</button>
             </span>
+          ))}
+        </div>
+
+        <label>Additional Tags: (Click to Toggle)</label>
+        <div className="tags-container">
+          {pCategories.map(tag => (
+            <button 
+              key={tag} 
+              type="button" 
+              className={`tag-button ${selectedCategories.includes(tag) ? "selected" : ""}`} 
+              onClick={() => toggleTag(tag)}
+            >
+              {tag}
+            </button>
           ))}
         </div>
 

@@ -55,6 +55,13 @@ const Post = ({ post, viewMode }) => {
               ))}
             </div>
           )}
+          {Array.isArray(post.categories) && post.categories.length > 0 && (
+            <div className="flair-tags">
+              {post.categories.map(tag => (
+                <span key={tag} className="flair-tag">{tag}</span>
+              ))}
+            </div>
+          )}
           <Link to={`/post/${post.id}`} className="view-post-link">
             {viewMode === 'card' ? 'Read More →' : 'View Post'}
           </Link>

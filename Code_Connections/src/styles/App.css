@@ -374,10 +374,11 @@ body > div {
   border: 2px solid white;
   margin: 5px;
   font-size: 18px;
+  font-weight: bold;
 }
 
 .selected-tag button {
-  background: transparent;
+  background: skyblue;
   border: none;
   color: white;
   cursor: pointer;
@@ -395,8 +396,23 @@ body > div {
   color: black;
   padding: 5px 10px;
   border-radius: 10px;
-  border: 2px solid green;
+  border: 2px solid gold;
   font-size: 16px;
   font-weight: bold;
   margin-right: 5px;
+}
+
+.tag-button {
+  padding: 5px 10px;
+  margin: 5px;
+  border: 2px solid gold;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.tag-button.selected {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
 }
