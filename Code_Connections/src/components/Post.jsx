@@ -25,7 +25,7 @@ const Post = ({ post, viewMode }) => {
   }, [post.owner_id]);
 
   const fetchOwnerDetails = async (event) => {
-    event.preventDefault(); // ✅ Prevents scrolling to the top
+    event.preventDefault();
     if (!post.owner_id) return;
     const userRef = doc(db, 'users', post.owner_id);
     const userSnap = await getDoc(userRef);
@@ -48,10 +48,22 @@ const Post = ({ post, viewMode }) => {
             src={profilePicture} 
             alt="Profile" 
             className="profile-picture" 
-            style={{ width: '40px', height: '40px' }}
+            style={{ width: '40px', height: '40px', cursor: 'pointer' }} 
+            onClick={fetchOwnerDetails}
           />
         )}
-        <h2>{post.title}</h2>
+        
+        {/* ✅ Clicking the post title now redirects to the post */}
+        <h2 style={{ cursor: 'pointer' }}>
+          <Link 
+            to={`/post/${post.id}`} 
+            style={{ textDecoration: 'none', color: 'inherit' }} 
+            onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+            onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
+          >
+            {post.title}
+          </Link>
+        </h2>
       </div>
       
       <div className="post-details">
@@ -65,14 +77,13 @@ const Post = ({ post, viewMode }) => {
                 cursor: 'pointer', 
                 marginLeft: '4px', 
                 color: 'inherit', 
-                textDecoration: 'none' // Ensure no underline by default
+                textDecoration: 'none'
               }}
-              onMouseEnter={(e) => e.target.style.textDecoration = 'underline'} // Add underline on hover
-              onMouseLeave={(e) => e.target.style.textDecoration = 'none'} // Remove underline when not hovering
+              onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+              onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
             >
               {post.owner_name || "Unknown"}
             </a>
-
           </span>
           <span>•</span>
           <span>{formattedDate}</span>
