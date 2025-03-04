@@ -83,12 +83,16 @@ body {
 
 .post-image {
   flex-shrink: 0;
+  border: 2px solid white;
+  padding: 40px;
 }
 
 .post-content {
   max-width: 400px;
   height: auto;
   word-wrap: break-word;
+  border: 2px solid white;
+  padding: 40px;
 }
 
 .post-image img{
@@ -333,4 +337,108 @@ button:hover {
 
 body > div {
   width: 100%;
+}
+
+.login-page {
+  max-width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.planguage-dropdown {
+  background: black;
+  border: 2px solid white;
+}
+
+.planguage-dropdown li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.planguage-dropdown li:hover {
+  background: white;
+  color: black;
+}
+
+.selected-languages {
+  margin-top: 10px;
+}
+
+.selected-tag {
+  display: inline-flex;
+  align-items: center;
+  background: skyblue;
+  color: black;
+  padding: 5px 10px;
+  border-radius: 15px;
+  border: 2px solid white;
+  margin: 5px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.selected-tag button {
+  background: skyblue;
+  border: none;
+  color: white;
+  cursor: pointer;
+  margin-left: 5px;
+}
+
+.flair-tags {
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+
+.flair-tag {
+  display: inline-block;
+  background: gold;
+  color: black;
+  padding: 5px 10px;
+  border-radius: 10px;
+  border: 2px solid gold;
+  font-size: 16px;
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.tag-button {
+  padding: 5px 10px;
+  margin: 5px;
+  border: 2px solid gold;
+  background-color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.tag-button.selected {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.scrollable-language-list {
+  max-height: 200px; 
+  overflow-y: auto;
+  margin-top: 10px;
+}
+
+.scrollable-language-list ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.scrollable-language-list li {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.scrollable-language-list li:hover {
+  background-color: gold;
+  color: black;
+}
+
+.language-item.selected {
+  background-color: white;
 }

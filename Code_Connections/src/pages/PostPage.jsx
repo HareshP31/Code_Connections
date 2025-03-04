@@ -176,6 +176,21 @@ const PostPage = () => {
             )}
           </div>
           <h3>Posted on: {formattedDate}</h3>
+          {Array.isArray(post.language_flair) && post.language_flair.length > 0 && (
+            <div className="flair-tags">
+              {post.language_flair.map(lang => (
+                <span key={lang} className="flair-tag">{lang}</span>
+              ))}
+            </div>
+          )}
+
+          {Array.isArray(post.categories) && post.categories.length > 0 && (
+            <div className="flair-tags">
+              {post.categories.map(tag => (
+                <span key={tag} className="flair-tag">{tag}</span>
+              ))}
+            </div>
+          )}
         </div>
         <div className="upvote-section">
           <button 
@@ -239,10 +254,11 @@ const PostPage = () => {
         <p>{post.content}</p>
       </div>
       
-      <div className="post-image">
-        {post.image_url && <img src={post.image_url} alt="Post" />}
-      </div>
-
+      {post.image_url && (
+        <div className="post-image">
+          <img src={post.image_url} alt="Post" />
+        </div>
+      )}
       
       
     </div>
