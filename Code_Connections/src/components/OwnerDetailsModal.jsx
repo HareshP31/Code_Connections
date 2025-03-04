@@ -87,7 +87,7 @@ const OwnerDetailsModal = ({ ownerDetails, onClose }) => {
 
           <div>
 
-            <h2 style={{ margin: 0, fontSize: '20px' }}>
+            <h2 style={{ margin: 0, fontSize: '20px', cursor: 'pointer'}} onClick={goToProfile} >
               {ownerDetails.username}
             </h2>
 

@@ -37,7 +37,7 @@ const AppContent = () => {
                         <Route path="/post/:id" element={<PostPage />} />
                         <Route path="/update/:id" element={<UpdatePost />} />
                         <Route path="/edit-profile" element={<EditProfile />} />
-                        <Route path="/users/:username" element={<UserProfile />} /> {/* ✅ New Route */}
+                        <Route path="/users/:username" element={<UserProfile />} /> 
                     </Routes>
                 </div>
             </div>
