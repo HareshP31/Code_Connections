@@ -3,7 +3,7 @@ import { supabase } from '../client';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 
-const pLanguages = [ "JavaScript", "Python", "Java", "C++", "C#", "Ruby", "Go", "Swift", "Kotlin", "Rust", "PHP", "TypeScript", "React", "Godot", "Unity", "Arduino", "Flask", ];
+const pLanguages = [ "JavaScript", "Python", "Java", "C", "C++", "C#", "Ruby", "Go", "Swift", "Kotlin", "Rust", "PHP", "TypeScript", "React", "Godot", "Unity", "Arduino", "Flask", ];
 const pCategories = ["Beginner", "Advanced", "AI/Machine Learning", "Game", "Educational", "Virtual Reality", "Computer Vision", "Embedded Systems"]
 
 const CreatePost = () => {
@@ -108,7 +108,7 @@ const CreatePost = () => {
         <label>Upload Image:</label>
         <input type="file" accept="image/*" onChange={handleFileChange} />
 
-        <label>Programming Language:</label>
+        <label>Programming Language/Technology:</label>
         <input
           type="text"
           placeholder="Begin typing..."
@@ -124,6 +124,21 @@ const CreatePost = () => {
             ))}
           </ul>
         )}
+
+        <div className="scrollable-language-list">
+          <h4>Full List:</h4>
+          <ul>
+            {pLanguages.map((lang) => (
+              <li 
+                key={lang} 
+                className={`language-item ${selectedLanguages.includes(lang) ? "selected" : ""}`} 
+                onClick={() => handleLanguageSelect(lang)}
+              >
+                {lang}
+              </li>
+            ))}
+          </ul>
+        </div>
 
         <div className="selected-languages">
           {selectedLanguages.map(lang => (

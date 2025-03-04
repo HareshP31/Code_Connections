@@ -416,3 +416,29 @@ body > div {
   color: white;
   border-color: #007bff;
 }
+
+.scrollable-language-list {
+  max-height: 200px; 
+  overflow-y: auto;
+  margin-top: 10px;
+}
+
+.scrollable-language-list ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.scrollable-language-list li {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.scrollable-language-list li:hover {
+  background-color: gold;
+  color: black;
+}
+
+.language-item.selected {
+  background-color: white;
+}
