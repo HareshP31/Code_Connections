@@ -4,9 +4,11 @@ import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { supabase } from '../client';
 import { DateTime } from "luxon"; // ✅ Import Luxon for formatting
+import { useAuth } from '../AuthContext'; // ✅ Import useAuth for user authentication
 
 const UserProfile = () => {
   const { username } = useParams();
+  const { user } = useAuth(); // ✅ Get the currently logged-in user
   const [userData, setUserData] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -39,7 +41,7 @@ const UserProfile = () => {
       try {
         const { data, error } = await supabase
           .from('posts')
-          .select('id, title, upvotes, created_at') // ✅ Fetch created_at for timestamp
+          .select('id, title, upvotes, created_at')
           .eq('owner_id', userId);
 
         if (error) {
@@ -83,6 +85,27 @@ const UserProfile = () => {
       <p><strong>Number of Posts:</strong> {userPosts.length}</p>
       <p><strong>Bio:</strong> {userData.bio ? userData.bio : "No bio available."}</p>
 
+      {/* ✅ Show Edit Profile Button if this is the logged-in user */}
+      {user && user.username === userData.username && (
+        <Link 
+          to="/edit-profile" 
+          style={{ 
+            display: 'inline-block', 
+            marginTop: '10px', 
+            padding: '10px 15px', 
+            backgroundColor: '#FFD700', 
+            color: 'black', 
+            borderRadius: '5px', 
+            textDecoration: 'none', 
+            fontWeight: 'bold' 
+          }}
+          onMouseEnter={(e) => e.target.style.backgroundColor = '#FFC107'}
+          onMouseLeave={(e) => e.target.style.backgroundColor = '#FFD700'}
+        >
+          Edit Profile
+        </Link>
+      )}
+
       {userPosts.length > 0 ? (
         <div style={{ marginTop: '20px' }}>
           <h2 style={{ color: '#FFD700' }}>{userData.username}'s Posts:</h2>
@@ -94,29 +117,22 @@ const UserProfile = () => {
 
               return (
                 <div key={post.id} style={{ border: '1px solid white', padding: '15px', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '15px' }}>
-                  
-                  
-                  {/* Post Info */}
                   <div>
-                  
-                    {/* ✅ Profile Picture beside Title */}
-                  
                     <h3>
-                        <Link to={`/users/${userData.username}`} style={{ color: '#FFD700', textDecoration: 'none' }}>
-                          <img 
-                            src={userData.profilePicture || 'https://via.placeholder.com/50'} 
-                            alt="User Profile" 
-                            style={{ width: '50px', height: '50px', borderRadius: '50%', marginRight: '20px', marginBottom: '-20px'}} 
-                          />
-                        </Link>
-                        <Link to={`/post/${post.id}`} style={{ color: '#FFD700', textDecoration: 'none' }}
-                          onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
-                          onMouseLeave={(e) => e.target.style.textDecoration = 'none'}>
-                          {post.title}
-                        </Link>
-                      </h3>
-                    
-                    {/* ✅ By {username} • Date & Time */}
+                      <Link to={`/users/${userData.username}`} style={{ color: '#FFD700', textDecoration: 'none' }}>
+                        <img 
+                          src={userData.profilePicture || 'https://via.placeholder.com/50'} 
+                          alt="User Profile" 
+                          style={{ width: '50px', height: '50px', borderRadius: '50%', marginRight: '20px', marginBottom: '-20px'}} 
+                        />
+                      </Link>
+                      <Link to={`/post/${post.id}`} style={{ color: '#FFD700', textDecoration: 'none' }}
+                        onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+                        onMouseLeave={(e) => e.target.style.textDecoration = 'none'}>
+                        {post.title}
+                      </Link>
+                    </h3>
+
                     <p style={{ fontSize: '14px', color: 'gray', marginTop: '30px' }}>
                       By <Link to={`/users/${userData.username}`} style={{ color: 'inherit', fontWeight: 'bold', textDecoration: 'none' }}
                         onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}

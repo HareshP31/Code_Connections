@@ -189,14 +189,23 @@ const PostPage = () => {
         <div className="header-info">
           <h1>{post.title}</h1>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            
-            <h3>Posted by: {post.owner_name || "Unknown"}</h3>
+          <h3>
+            Posted by: 
+            <Link to={`/users/${post.owner_name}`} 
+              style={{ textDecoration: 'none', color: 'inherit', marginLeft: '5px'}}
+              onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+              onMouseLeave={(e) => e.target.style.textDecoration = 'none'}>
+              {post.owner_name || "Unknown"}
+            </Link>
+          </h3>
             {profilePicture && (
-              <img 
-                src={profilePicture} 
-                alt="Profile" 
-                style={{ width: '35px', height: '35px', borderRadius: '50%', marginBottom: '3px'}} 
-              />
+              <Link to={`/users/${post.owner_name}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <img 
+                  src={profilePicture} 
+                  alt="Profile" 
+                  style={{ width: '35px', height: '35px', borderRadius: '50%', marginBottom: '1px'}} 
+                />
+              </Link>
             )}
           </div>
           <h3>Posted on: {formattedDate}</h3>
