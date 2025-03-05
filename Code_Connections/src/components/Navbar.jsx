@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 
 const Navbar = () => {
@@ -23,7 +23,7 @@ const Navbar = () => {
     <nav className="navbar">
       <button onClick={() => navigate('/')} className="nav-link">Home</button>
       {user && (
-        <button  onClick={() => navigate('/create')} className="nav-link">Create Post</button>
+        <button onClick={() => navigate('/create')} className="nav-link">Create Post</button>
       )}
       <form onSubmit={handleSearch} className="search-form" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
         <input
@@ -39,7 +39,7 @@ const Navbar = () => {
       {user ? (
         <>
           <button
-            onClick={() => navigate('/edit-profile')}
+            onClick={() => navigate(`/users/${user.username}`)}
             className="profile-button"
           >
             <img

@@ -8,6 +8,7 @@ import CreatePost from './pages/CreatePost';
 import PostPage from './pages/PostPage';
 import UpdatePost from './pages/UpdatePost';
 import EditProfile from './pages/EditProfile';
+import UserProfile from './pages/UserProfile';
 import { AuthProvider, useAuth } from './AuthContext.jsx';
 import { initializeAuthPersistence } from './services/authService';
 import './styles/App.css';
@@ -36,6 +37,7 @@ const AppContent = () => {
                         <Route path="/post/:id" element={<PostPage />} />
                         <Route path="/update/:id" element={<UpdatePost />} />
                         <Route path="/edit-profile" element={<EditProfile />} />
+                        <Route path="/users/:username" element={<UserProfile />} /> 
                     </Routes>
                 </div>
             </div>

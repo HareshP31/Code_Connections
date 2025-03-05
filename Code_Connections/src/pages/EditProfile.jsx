@@ -55,7 +55,7 @@ const EditProfile = () => {
       });
 
       alert('Profile updated successfully!');
-      navigate('/');
+      navigate(`/users/${username}`);
       window.location.reload();
     } catch (error) {
       console.error('Error updating profile:', error);

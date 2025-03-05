@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { supabase } from '../client';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../firebase';
 
 const pLanguages = [ "JavaScript", "Python", "Java", "C", "C++", "C#", "Ruby", "Go", "Swift", "Kotlin", "Rust", "PHP", "TypeScript", "React", "Godot", "Unity", "Arduino", "Flask", ];
 const pCategories = ["Beginner", "Advanced", "AI/Machine Learning", "Game", "Educational", "Virtual Reality", "Computer Vision", "Embedded Systems"]
@@ -19,6 +21,22 @@ const CreatePost = () => {
   const handleFileChange = (e) => {
     setImageFile(e.target.files[0]);
   };
+
+
+
+  const incrementUserPostCount = async (userId) => {
+    const userRef = doc(db, "users", userId);
+    try {
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists()) {
+        const currentPosts = userSnap.data().numberOfPosts || 0;
+        await updateDoc(userRef, { numberOfPosts: currentPosts + 1 });
+      }
+    } catch (err) {
+      console.error("Error updating user post count:", err);
+    }
+  };
+
 
   const toggleTag = (tag) => {
     setSelectedCategories((prevTags) =>
@@ -41,6 +59,7 @@ const CreatePost = () => {
     lang.toLowerCase().includes(pSearchTerm.toLowerCase()) &&
     !selectedLanguages.includes(lang)
   );
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -91,6 +110,8 @@ const CreatePost = () => {
     if (error) {
       console.error('Error creating post:', error);
     } else {
+
+      await incrementUserPostCount(user.uid);
       navigate('/');
     }
   };
