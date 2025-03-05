@@ -66,9 +66,19 @@ const Post = ({ post, viewMode }) => {
       </div>
 
       <div className="post-details">
-        <p className="post-meta">
-          <span>By {post.owner_name || "Unknown"}</span>
-          <span>•</span>
+      <p className="post-meta">
+          <span>
+            By{" "}
+            <Link 
+              to={`/users/${post.owner_name}`} 
+              style={{ textDecoration: "none", color: "inherit", fontWeight: "bold" }}
+              onMouseEnter={(e) => (e.target.style.textDecoration = "underline")}
+              onMouseLeave={(e) => (e.target.style.textDecoration = "none")}
+            >
+              {post.owner_name || "Unknown"}
+            </Link>
+          </span>
+          <span> • </span>
           <span>{formattedDate}</span>
         </p>
         <div className="upvotes-section">
