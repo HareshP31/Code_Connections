@@ -41,18 +41,19 @@ const UserProfile = () => {
       try {
         const { data, error } = await supabase
           .from('posts')
-          .select('id, title, upvotes, created_at')
+          .select('id, title, upvotes, created_at, language_flair, categories')
           .eq('owner_id', userId);
-
+    
         if (error) {
           throw error;
         }
-
+    
         setUserPosts(data || []);
       } catch (error) {
         console.error("Error fetching user posts:", error);
       }
     };
+    
 
     fetchUserProfile();
   }, [username]);
@@ -104,57 +105,74 @@ const UserProfile = () => {
           Edit Profile
         </Link>
       )}
+{userPosts.length > 0 ? (
+  <div style={{ marginTop: '20px' }}>
+    <h2 style={{ color: '#FFD700' }}>{userData.username}'s Posts:</h2>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '20px' }}>
+      {userPosts.map(post => {
+        const formattedDate = DateTime.fromISO(post.created_at)
+          .setZone("America/New_York")
+          .toLocaleString(DateTime.DATETIME_MED);
 
-      {userPosts.length > 0 ? (
-        <div style={{ marginTop: '20px' }}>
-          <h2 style={{ color: '#FFD700' }}>{userData.username}'s Posts:</h2>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '20px' }}>
-            {userPosts.map(post => {
-              const formattedDate = DateTime.fromISO(post.created_at)
-                .setZone("America/New_York")
-                .toLocaleString(DateTime.DATETIME_MED);
+        return (
+          <div key={post.id} style={{ border: '1px solid white', padding: '15px', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '15px' }}>
+            <div>
+              <h3>
+                <Link to={`/users/${userData.username}`} style={{ color: '#FFD700', textDecoration: 'none' }}>
+                  <img 
+                    src={userData.profilePicture || 'https://via.placeholder.com/50'} 
+                    alt="User Profile" 
+                    style={{ width: '50px', height: '50px', borderRadius: '50%', marginRight: '20px', marginBottom: '-20px'}} 
+                  />
+                </Link>
+                <Link to={`/post/${post.id}`} style={{ color: '#FFD700', textDecoration: 'none' }}
+                  onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+                  onMouseLeave={(e) => e.target.style.textDecoration = 'none'}>
+                  {post.title}
+                </Link>
+              </h3>
 
-              return (
-                <div key={post.id} style={{ border: '1px solid white', padding: '15px', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '15px' }}>
-                  <div>
-                    <h3>
-                      <Link to={`/users/${userData.username}`} style={{ color: '#FFD700', textDecoration: 'none' }}>
-                        <img 
-                          src={userData.profilePicture || 'https://via.placeholder.com/50'} 
-                          alt="User Profile" 
-                          style={{ width: '50px', height: '50px', borderRadius: '50%', marginRight: '20px', marginBottom: '-20px'}} 
-                        />
-                      </Link>
-                      <Link to={`/post/${post.id}`} style={{ color: '#FFD700', textDecoration: 'none' }}
-                        onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
-                        onMouseLeave={(e) => e.target.style.textDecoration = 'none'}>
-                        {post.title}
-                      </Link>
-                    </h3>
+              <p style={{ fontSize: '14px', color: 'gray', marginTop: '30px' }}>
+                By <Link to={`/users/${userData.username}`} style={{ color: 'inherit', fontWeight: 'bold', textDecoration: 'none' }}
+                  onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+                  onMouseLeave={(e) => e.target.style.textDecoration = 'none'}>
+                  {userData.username}
+                </Link> • {formattedDate}
+              </p>
 
-                    <p style={{ fontSize: '14px', color: 'gray', marginTop: '30px' }}>
-                      By <Link to={`/users/${userData.username}`} style={{ color: 'inherit', fontWeight: 'bold', textDecoration: 'none' }}
-                        onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
-                        onMouseLeave={(e) => e.target.style.textDecoration = 'none'}>
-                        {userData.username}
-                      </Link> • {formattedDate}
-                    </p>
+              <p style={{color: '#FFD700' }}>▲ {post.upvotes}</p>
 
-                    <p style={{color: '#FFD700' }}>▲ {post.upvotes}</p>
-                    <Link to={`/post/${post.id}`} style={{ display: 'inline-block', color: 'inherit' }}
-                    onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
-                    onMouseLeave={(e) => e.target.style.textDecoration = 'none'}>
-                      View Post
-                    </Link>
-                  </div>
+              {Array.isArray(post.language_flair) && post.language_flair.length > 0 && (
+                <div className="flair-tags">
+                  {post.language_flair.map(lang => (
+                    <span key={lang} className="flair-tag">{lang}</span>
+                  ))}
                 </div>
-              );
-            })}
+              )}
+
+              {Array.isArray(post.categories) && post.categories.length > 0 && (
+                <div className="flair-tags">
+                  {post.categories.map(tag => (
+                    <span key={tag} className="flair-tag">{tag}</span>
+                  ))}
+                </div>
+              )}
+
+              <Link to={`/post/${post.id}`} style={{ display: 'inline-block', color: 'inherit'}}
+                onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+                onMouseLeave={(e) => e.target.style.textDecoration = 'none'}>
+                View Post
+              </Link>
+            </div>
           </div>
-        </div>
-      ) : (
-        <p style={{ marginTop: '20px', fontSize: '16px' }}><em>This user has not made any posts yet.</em></p>
-      )}
+        );
+      })}
+    </div>
+  </div>
+) : (
+  <p style={{ marginTop: '20px', fontSize: '16px' }}><em>This user has not made any posts yet.</em></p>
+)}
+
     </div>
   );
 };
