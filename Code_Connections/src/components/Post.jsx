@@ -53,7 +53,6 @@ const Post = ({ post, viewMode }) => {
           />
         )}
         
-        {/* ✅ Clicking the post title now redirects to the post */}
         <h2 style={{ cursor: 'pointer' }}>
           <Link 
             to={`/post/${post.id}`} 

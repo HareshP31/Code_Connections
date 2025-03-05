@@ -8,7 +8,7 @@ import CreatePost from './pages/CreatePost';
 import PostPage from './pages/PostPage';
 import UpdatePost from './pages/UpdatePost';
 import EditProfile from './pages/EditProfile';
-import UserProfile from './pages/UserProfile'; // ✅ Import UserProfile
+import UserProfile from './pages/UserProfile';
 import { AuthProvider, useAuth } from './AuthContext.jsx';
 import { initializeAuthPersistence } from './services/authService';
 import './styles/App.css';

@@ -62,7 +62,6 @@ const OwnerDetailsModal = ({ ownerDetails, onClose }) => {
         className="modal-content" 
         style={{ position: 'relative', padding: '20px', backgroundColor: '#000000e8', borderRadius: '10px' }}
       >
-        {/* Close Button */}
         <span 
           className="close" 
           onClick={onClose} 
@@ -71,9 +70,7 @@ const OwnerDetailsModal = ({ ownerDetails, onClose }) => {
           &times;
         </span>
 
-        {/* Header: Profile Picture, Username, View Profile & Last Seen */}
         <div className="modal-header" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-          {/* ✅ Profile Picture Clickable */}
           {ownerDetails.profilePicture && (
             <img 
               src={ownerDetails.profilePicture} 

@@ -3,12 +3,12 @@ import { useParams, Link } from 'react-router-dom';
 import { collection, query, where, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
 import { supabase } from '../client';
-import { DateTime } from "luxon"; // ✅ Import Luxon for formatting
-import { useAuth } from '../AuthContext'; // ✅ Import useAuth for user authentication
+import { DateTime } from "luxon";
+import { useAuth } from '../AuthContext';
 
 const UserProfile = () => {
   const { username } = useParams();
-  const { user } = useAuth(); // ✅ Get the currently logged-in user
+  const { user } = useAuth();
   const [userData, setUserData] = useState(null);
   const [userPosts, setUserPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -85,7 +85,6 @@ const UserProfile = () => {
       <p><strong>Number of Posts:</strong> {userPosts.length}</p>
       <p><strong>Bio:</strong> {userData.bio ? userData.bio : "No bio available."}</p>
 
-      {/* ✅ Show Edit Profile Button if this is the logged-in user */}
       {user && user.username === userData.username && (
         <Link 
           to="/edit-profile" 
