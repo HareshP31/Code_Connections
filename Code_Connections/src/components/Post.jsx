@@ -64,32 +64,30 @@ const Post = ({ post, viewMode }) => {
           </Link>
         </h2>
       </div>
-      
+
       <div className="post-details">
         <p className="post-meta">
-          <span>
-            By
-            <a 
-              href="#" 
-              onClick={fetchOwnerDetails} 
-              style={{ 
-                cursor: 'pointer', 
-                marginLeft: '4px', 
-                color: 'inherit', 
-                textDecoration: 'none'
-              }}
-              onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
-              onMouseLeave={(e) => e.target.style.textDecoration = 'none'}
-            >
-              {post.owner_name || "Unknown"}
-            </a>
-          </span>
+          <span>By {post.owner_name || "Unknown"}</span>
           <span>•</span>
           <span>{formattedDate}</span>
         </p>
         <div className="upvotes-section">
           ▲ {post.upvotes}
         </div>
+        {Array.isArray(post.language_flair) && post.language_flair.length > 0 && (
+          <div className="flair-tags">
+            {post.language_flair.map(lang => (
+              <span key={lang} className="flair-tag">{lang}</span>
+            ))}
+          </div>
+        )}
+        {Array.isArray(post.categories) && post.categories.length > 0 && (
+          <div className="flair-tags">
+            {post.categories.map(tag => (
+              <span key={tag} className="flair-tag">{tag}</span>
+            ))}
+          </div>
+        )}
         <Link to={`/post/${post.id}`} className="view-post-link">
           {viewMode === 'card' ? 'Read More →' : 'View Post'}
         </Link>
@@ -103,6 +101,6 @@ const Post = ({ post, viewMode }) => {
       )}
     </div>
   );
-}
+};
 
 export default Post;
