@@ -131,7 +131,7 @@ body {
   width: 3/4;
   max-width: none;
   justify-content: space-evenly;
-  grid-auto-rows: minmax(350px, auto);  
+  grid-auto-rows: minmax(350px, auto);
 }
 
 
@@ -201,6 +201,17 @@ body {
   border-radius: 8px;
   background-color: rgba(15, 15, 15, 0.9);
   margin: 0 1rem;
+}
+
+.post-card.list:hover {
+  transform: translateY(-5px);
+}
+
+/*aos animation*/
+
+.aos-animate .posts-container {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .upvote-section button,

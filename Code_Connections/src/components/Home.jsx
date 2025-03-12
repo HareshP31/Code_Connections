@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { supabase } from "../client";
 import Post from "./Post";
 import { useLocation } from "react-router-dom";
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import "../styles/App.css";
+
 
 const Home = () => {
   const [posts, setPosts] = useState([]);
@@ -10,6 +13,7 @@ const Home = () => {
   const [sortOption, setSortOption] = useState("created_at");
   const [selectedTag, setSelectedTag] = useState("");
   const location = useLocation();
+
 
   const availableTags = [
     "JavaScript", "Python", "Java", "C", "C++", "C#", "Ruby", "Go", "Swift", "Kotlin", "Rust", 
@@ -51,8 +55,23 @@ const Home = () => {
   };
 
   useEffect(() => {
+    AOS.init({
+      duration: 600,
+      once: false, 
+      offset: 100,
+      easing: 'ease-out-quad',
+      mirror: true,
+      anchorPlacement: 'top-bottom'
+    });
     fetchPosts();
-  }, [sortOption, location.search, selectedTag]);
+}, [sortOption, location.search, selectedTag]);
+
+useEffect(() => {
+  if (posts.length > 0) {
+    AOS.refreshHard();
+  }
+}, [posts, viewMode]);
+
 
   return (
     <div>
@@ -86,7 +105,9 @@ const Home = () => {
       {posts.length === 0 ? (
         <p>No posts found.</p>
       ) : (
-        <div className={`posts-container ${viewMode}`}>
+        <div className={`posts-container ${viewMode}`}
+        style={{height: '3/4'}}
+        >
           {posts.map((post) => (
             <Post key={post.id} post={post} viewMode={viewMode} />
           ))}
