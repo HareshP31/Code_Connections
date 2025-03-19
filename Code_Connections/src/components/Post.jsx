@@ -41,7 +41,13 @@ const Post = ({ post, viewMode }) => {
     .toLocaleString(DateTime.DATETIME_MED);
 
   return (
-    <div className={`post-card ${viewMode}`}>
+    <div 
+    className={`post-card ${viewMode}`}
+    data-aos="fade-up" 
+    data-aos-delay="50"
+    data-aos-once="false"
+    data-aos-mirror="true"
+  >
       <div className="card-header">
         {profilePicture && (
           <img 
@@ -99,7 +105,7 @@ const Post = ({ post, viewMode }) => {
           </div>
         )}
         <Link to={`/post/${post.id}`} className="view-post-link">
-          {viewMode === 'card' ? 'Read More →' : 'View Post'}
+          {viewMode === 'card' ? 'View Post' : 'View Post'}
         </Link>
       </div>
 
