@@ -95,7 +95,7 @@ useEffect(() => {
         <button 
           onClick={toggleViewMode} 
           className="view-toggle py-2 px-4 rounded"
-          style={{ padding: '10px 15px', marginLeft: 'auto' }}
+          style={{ padding: '10px 15px', marginLeft: 'auto', border: 'solid 2px white' }}
         >
           {viewMode === "list" ? "☷ Card View" : "☰ List View"}
         </button>

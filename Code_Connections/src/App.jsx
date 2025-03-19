@@ -10,6 +10,7 @@ import UpdatePost from './pages/UpdatePost';
 import EditProfile from './pages/EditProfile';
 import UserProfile from './pages/UserProfile';
 import UsersList from './pages/UsersList';
+import GuidePage from './pages/GuidePage';
 import { AuthProvider, useAuth } from './AuthContext.jsx';
 import { initializeAuthPersistence } from './services/authService';
 import './styles/App.css';
@@ -40,7 +41,7 @@ const AppContent = () => {
                         <Route path="/edit-profile" element={<EditProfile />} />
                         <Route path="/users/:username" element={<UserProfile />} /> 
                         <Route path="/users" element={<UsersList />} />
-
+                        <Route path="/guide" element={<GuidePage />} />
                     </Routes>
                 </div>
             </div>

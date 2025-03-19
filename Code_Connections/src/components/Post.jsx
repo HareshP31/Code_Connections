@@ -105,7 +105,7 @@ const Post = ({ post, viewMode }) => {
           </div>
         )}
         <Link to={`/post/${post.id}`} className="view-post-link">
-          {viewMode === 'card' ? 'Read More →' : 'View Post'}
+          {viewMode === 'card' ? 'View Post' : 'View Post'}
         </Link>
       </div>
 
