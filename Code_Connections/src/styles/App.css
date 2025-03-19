@@ -391,6 +391,9 @@ body > div {
   max-width: fit-content;
   margin-left: auto;
   margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .planguage-dropdown {
@@ -490,4 +493,3 @@ body > div {
 .language-item.selected {
   background-color: white;
 }
-
