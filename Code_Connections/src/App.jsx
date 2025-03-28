@@ -11,6 +11,7 @@ import EditProfile from './pages/EditProfile';
 import UserProfile from './pages/UserProfile';
 import UsersList from './pages/UsersList';
 import GuidePage from './pages/GuidePage';
+import Chatbot from './components/Chatbot.jsx';
 import { AuthProvider, useAuth } from './AuthContext.jsx';
 import { initializeAuthPersistence } from './services/authService';
 import './styles/App.css';
@@ -44,6 +45,7 @@ const AppContent = () => {
                         <Route path="/guide" element={<GuidePage />} />
                     </Routes>
                 </div>
+                <Chatbot />
             </div>
         </Router>
     );
