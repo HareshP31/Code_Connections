@@ -5,13 +5,19 @@ body {
   margin: 0;
   padding: 0;
   padding-top: 70px;
+}
+
+body.light {
+  color: black;
+  background-color: rgb(240, 228, 137);
+}
+
+body.dark {
   color: gold;
   background-color: rgb(15, 15, 15);
 }
 
 .navbar {
-  color: black;
-  background-color: gold;
   padding: 1rem;
   display: flex;
   justify-content: center;
@@ -26,18 +32,38 @@ body {
   margin-top: -12px; 
 }
 
-.nav-link {
+body.dark .navbar {
   color: black;
-  border: 3px solid black;
-  border-radius: 5px;
-  padding: 5px;
   background-color: gold;
+}
+
+body.light .navbar {
+  color: rgb(240, 228, 137);
+  background-color: black;
+}
+
+body.dark button {
+  color: black;
+  background-color: gold;
+  border: 3px solid black;
+}
+
+body.light button {
+  color: rgb(240, 228, 137);
+  background-color: black;
+  border: 3px solid rgb(240, 228, 137);
+}
+
+.nav-link {
+  padding: 5px;
   margin-right: 1rem;
   text-decoration: none;
 }
+
 .nav-link.search-button {
   transition: border-color 0.25s ease-in-out;
 }
+
 .nav-link:hover {
   text-decoration: underline;
   color: white;
@@ -53,15 +79,23 @@ body {
 
 .search-input {
   padding: 0.5rem;
-  border: 3px solid black;
   border-radius: 5px;
-  background-color: gold;
-  color: black;
   flex-grow: 1;
   margin-right: 0.5rem;
   margin-top: 2.25rem;
 }
 
+body.dark .search-input {
+  background-color: gold;
+  color: black;
+  border: 3px solid black;
+}
+
+body.light .search-input {
+  background-color: black;
+  color: rgb(240, 228, 137);
+  border: 3px solid rgb(240, 228, 137);
+}
 
 .create-post, form, input, textarea{
   display: flex;
@@ -142,11 +176,19 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  border: 3px solid gold;
-  background-color: rgba(15, 15, 15, 0.9);
   padding: 2rem;
   border-radius: 8px;
   box-sizing: border-box;
+}
+
+body.dark .post-card.card {
+  border: 3px solid gold;
+  background-color: rgba(15, 15, 15, 0.9);
+}
+
+body.light .post-card.card {
+  border: 3px solid black;
+  background-color: rgb(240, 228, 137);
 }
 
 .post-card.card:hover {
@@ -163,7 +205,14 @@ body {
 .card-header h2 {
   font-size: 1.5rem;
   margin: 0;
+}
+
+body.dark .card-header h2{
   color: gold;
+}
+
+body.light .card-header h2{
+  color: black;
 }
 
 .card-content {
@@ -176,12 +225,19 @@ body {
 .post-meta {
   display: flex;
   gap: 0.5rem;
-  color: #888;
   font-size: 0.9rem;
 }
 
-.upvotes-section {
+body.dark .post-meta {
   color: gold;
+}
+
+body.light .post-meta {
+  color: black;
+}
+
+.upvotes-section {
+  color: #744bfa;
   font-size: 1.2rem;
 }
 
@@ -197,10 +253,18 @@ body {
 
 .post-card.list {
   padding: 2rem;
-  border: 2px solid gold;
   border-radius: 8px;
-  background-color: rgba(15, 15, 15, 0.9);
   margin: 0 1rem;
+}
+
+body.dark .post-card.list {
+  border: 3px solid gold;
+  background-color: rgba(15, 15, 15, 0.9);
+}
+
+body.light .post-card.list {
+  border: 3px solid black;
+  background-color: rgb(240, 228, 137);
 }
 
 .post-card.list:hover {
@@ -222,29 +286,30 @@ body {
 }
 
 .upvoted {
-  background-color: rgb(6, 204, 6);
+  background-color: rgb(6, 204, 6) !important;
   margin-right: 20px;
   padding: 0.7rem 1.2rem;
   cursor: pointer;
 }
 
-.delete-button {
-  max-width: 100px;
-  height: auto;
-  word-wrap: break-word;
-  text-align: center;
-  font-size: 1rem;
-  padding: 10px;
-}
-
 .view-post-link {
-  color: white;
   text-decoration: underline;
 }
 
-.view-post-link:hover {
+body.dark .view-post-link {
+  color: gold;
+}
+
+body.light .view-post-link {
+  color: black;
+}
+
+body.dark .view-post-link:hover {
   color: skyblue;
-  text-decoration: underline;
+}
+
+body.light .view-post-link:hover {
+  color: skyblue;
 }
 
 .create-post, .update-post {
@@ -267,9 +332,6 @@ button {
   margin-top: 1rem;
   padding: 0.5rem 1rem;
   cursor: pointer;
-  color: black;
-  background-color: gold;
-  border: 5px solid black;
 }
 
 button:hover {
@@ -277,12 +339,16 @@ button:hover {
 }
 
 .delete-button {
-  color: white;
-  background-color: red;
-  border: solid, 2px, white;
-  padding: 0.5rem 1rem;
+  color: white !important;
+  background-color: red !important;
   cursor: pointer;
   margin-top: 1rem;
+  max-width: 200px;
+  height: auto;
+  word-wrap: break-word;
+  text-align: center;
+  font-size: 1rem;
+  padding: 10px;
 }
 
 .comment {
@@ -291,7 +357,7 @@ button:hover {
 }
 
 .edit-link {
-  color: white;
+  color: #744bfa;
   text-decoration: underline;
 }
 
@@ -315,7 +381,6 @@ button:hover {
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  border: 3px solid black !important;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
@@ -324,6 +389,14 @@ button:hover {
   color: rgba(0, 0, 0, 0.87);
   margin-right: 15px;
   margin-top: 12px;
+}
+
+body.dark .profile-button {
+  border: 3px solid black !important;
+}
+
+body.light .profile-button {
+  border: 3px solid rgb(240, 228, 137) !important;
 }
 
 .profile-button:hover {
@@ -429,7 +502,7 @@ body > div {
 .selected-tag {
   display: inline-flex;
   align-items: center;
-  background: skyblue;
+  background: #744bfa;
   color: black;
   padding: 5px 10px;
   border-radius: 15px;
@@ -454,11 +527,11 @@ body > div {
 
 .flair-tag {
   display: inline-block;
-  background: gold;
+  background: #744bfa;
   color: black;
   padding: 5px 10px;
   border-radius: 10px;
-  border: 2px solid gold;
+  border: 2px solid #744bfa;
   font-size: 16px;
   font-weight: bold;
   margin-right: 5px;
@@ -503,4 +576,29 @@ body > div {
 
 .language-item.selected {
   background-color: white;
+  color: black;
+}
+
+body.dark .view-profile {
+  color: gold;
+}
+
+body.light .view-profile {
+  color: black;
+}
+
+body.dark .view-profile-posts {
+  border: 3px solid gold;
+}
+
+body.light .view-profile-posts {
+  border: 3px solid black;
+}
+
+body.dark .view-profile-posts-titles {
+  color: gold;
+}
+
+body.light .view-profile-posts-titles {
+  color: black;
 }

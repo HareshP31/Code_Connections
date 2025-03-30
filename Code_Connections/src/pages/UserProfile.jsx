@@ -75,8 +75,8 @@ const UserProfile = () => {
   if (!userData) return <p style={{ color: 'white' }}>User not found.</p>;
 
   return (
-    <div style={{ padding: '20px', color: 'white' }}>
-      <h1 style={{ color: '#FFD700' }}>{userData.username}'s Profile</h1>
+    <div className="view-profile">
+      <h1>{userData.username}'s Profile</h1>
       <img 
         src={userData.profilePicture || 'https://via.placeholder.com/100'} 
         alt="Profile" 
@@ -93,21 +93,21 @@ const UserProfile = () => {
             display: 'inline-block', 
             marginTop: '10px', 
             padding: '10px 15px', 
-            backgroundColor: '#FFD700', 
+            backgroundColor: '#744bfa', 
             color: 'black', 
             borderRadius: '5px', 
             textDecoration: 'none', 
             fontWeight: 'bold' 
           }}
-          onMouseEnter={(e) => e.target.style.backgroundColor = '#FFC107'}
-          onMouseLeave={(e) => e.target.style.backgroundColor = '#FFD700'}
+          onMouseEnter={(e) => e.target.style.backgroundColor = 'white'}
+          onMouseLeave={(e) => e.target.style.backgroundColor = '#744bfa'}
         >
           Edit Profile
         </Link>
       )}
 {userPosts.length > 0 ? (
   <div style={{ marginTop: '20px' }}>
-    <h2 style={{ color: '#FFD700' }}>{userData.username}'s Posts:</h2>
+    <h2>{userData.username}'s Posts:</h2>
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(350px, 1fr))', gap: '20px' }}>
       {userPosts.map(post => {
         const formattedDate = DateTime.fromISO(post.created_at)
@@ -115,24 +115,24 @@ const UserProfile = () => {
           .toLocaleString(DateTime.DATETIME_MED);
 
         return (
-          <div key={post.id} style={{ border: '1px solid white', padding: '15px', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <div className="view-profile-posts" key={post.id} style={{ padding: '15px', borderRadius: '10px', display: 'flex', alignItems: 'center', gap: '15px' }}>
             <div>
               <h3>
-                <Link to={`/users/${userData.username}`} style={{ color: '#FFD700', textDecoration: 'none' }}>
+                <Link to={`/users/${userData.username}`}>
                   <img 
                     src={userData.profilePicture || 'https://via.placeholder.com/50'} 
                     alt="User Profile" 
                     style={{ width: '50px', height: '50px', borderRadius: '50%', marginRight: '20px', marginBottom: '-20px'}} 
                   />
                 </Link>
-                <Link to={`/post/${post.id}`} style={{ color: '#FFD700', textDecoration: 'none' }}
+                <Link to={`/post/${post.id}`} className="view-profile-posts-titles"
                   onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
                   onMouseLeave={(e) => e.target.style.textDecoration = 'none'}>
                   {post.title}
                 </Link>
               </h3>
 
-              <p style={{ fontSize: '14px', color: 'gray', marginTop: '30px' }}>
+              <p>
                 By <Link to={`/users/${userData.username}`} style={{ color: 'inherit', fontWeight: 'bold', textDecoration: 'none' }}
                   onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
                   onMouseLeave={(e) => e.target.style.textDecoration = 'none'}>
@@ -140,7 +140,7 @@ const UserProfile = () => {
                 </Link> • {formattedDate}
               </p>
 
-              <p style={{color: '#FFD700' }}>▲ {post.upvotes}</p>
+              <p>▲ {post.upvotes}</p>
 
               {Array.isArray(post.language_flair) && post.language_flair.length > 0 && (
                 <div className="flair-tags">

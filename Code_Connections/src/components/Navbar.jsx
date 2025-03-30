@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../AuthContext';
 
-const Navbar = () => {
+const Navbar = ({ toggleTheme, isDarkMode }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const navigate = useNavigate();
   const { user, logout } = useAuth();
@@ -20,7 +20,7 @@ const Navbar = () => {
   const defaultProfilePicture = 'https://cdn.pfps.gg/pfps/2301-default-2.png';
 
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${isDarkMode ? 'dark' : 'light'}`}>
       <button onClick={() => navigate('/')} className="nav-link">Home</button>
       <button onClick={() => navigate('/guide')} className="nav-link">Guide</button>
       {user && (
@@ -58,6 +58,9 @@ const Navbar = () => {
           <button onClick={() => navigate('/register')} className="nav-link">Register</button>
         </>
       )}
+      <button onClick={toggleTheme} className="theme-toggle-btn">
+        {isDarkMode ? 'Dark Mode' : 'Light Mode'}
+      </button>
     </nav>
   );
 };
