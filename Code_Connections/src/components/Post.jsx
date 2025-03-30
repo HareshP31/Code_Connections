@@ -88,7 +88,7 @@ const Post = ({ post, viewMode }) => {
           <span>{formattedDate}</span>
         </p>
         <div className="upvotes-section">
-          ▲ {post.upvotes}
+        ⮝ {post.upvotes}
         </div>
         {Array.isArray(post.language_flair) && post.language_flair.length > 0 && (
           <div className="flair-tags">

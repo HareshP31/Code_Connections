@@ -4,6 +4,7 @@ import Lottie from "lottie-react";
 import collaboration from "../assets/collaborationcc.json"
 import expect from "../assets/expectcc.json"
 import goals from "../assets/goalscc.json"
+import confused from "../assets/confusedcc.json"
 import "../styles/GuidePage.css";
 
 const GuidePage = () => {
@@ -20,7 +21,8 @@ const GuidePage = () => {
         to 48 hours, where participants brainstorm ideas, develop prototypes, and showcase their projects. They’re a great way to learn new skills, 
         collaborate with others, and bring creative ideas to life. Whether you're a beginner or an experienced coder, 
         hackathons provide a supportive environment to experiment,
-        build something cool, and have fun! Plus, many hackathons offer mentorship, workshops, and prizes to help teams succeed.
+        build something cool, and have fun! Plus, many hackathons offer mentorship, workshops, and prizes to help teams succeed. Hackathons are 
+        valuable opportunities to get real world skills and impress potential employers with knowledge from outside the classroom.
         </p>
         <Lottie animationData={collaboration} className="lottie-collaboration" />
         </div>
@@ -44,7 +46,21 @@ const GuidePage = () => {
       </>
       ),
     },
-
+    { title: "Feeling Lost?", content: (
+      <>
+        <div className="hackathon-section">
+        <p>If all of that sounds overwhelming, don’t worry! Hackathons are meant to be fun and welcoming, no matter your skill level. 
+          You don’t need to be an expert programmer or have a perfect idea before you start. Many participants are beginners, 
+          and there will be mentors, workshops, and teammates to help you along the way. The goal isn’t just to win, it’s to learn, 
+          try something new, and enjoy the experience. You can go at your own pace, take breaks when needed, and focus on what interests 
+          you most. Everyone is there to support each other, and the best projects often come from just experimenting and having fun. 
+          No matter what, you’ll walk away with new skills, new friends, and a cool experience to remember!
+        </p>
+        <Lottie animationData={confused} className="lottie-confused" />
+        </div>
+      </>
+      ),
+    },
     { title: "What To Bring?", content: (
       <>
       <div className="hackathon-list">

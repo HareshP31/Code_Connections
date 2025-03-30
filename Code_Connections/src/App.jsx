@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
@@ -11,12 +11,33 @@ import EditProfile from './pages/EditProfile';
 import UserProfile from './pages/UserProfile';
 import UsersList from './pages/UsersList';
 import GuidePage from './pages/GuidePage';
+import Chatbot from './components/Chatbot.jsx';
 import { AuthProvider, useAuth } from './AuthContext.jsx';
 import { initializeAuthPersistence } from './services/authService';
 import './styles/App.css';
 
 const AppContent = () => {
     const { loading } = useAuth();
+    const [isDarkMode, setIsDarkMode] = useState(false);
+
+    useEffect(() => {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            setIsDarkMode(savedTheme === 'dark');
+        }
+    }, []);
+
+    useEffect(() => {
+        document.body.className = isDarkMode ? 'dark' : 'light';
+    }, [isDarkMode]);
+
+    const toggleTheme = () => {
+        setIsDarkMode((prevMode) => {
+            const newMode = !prevMode;
+            localStorage.setItem('theme', newMode ? 'dark' : 'light');
+            return newMode;
+        });
+    };
 
     useEffect(() => {
         initializeAuthPersistence();
@@ -29,7 +50,7 @@ const AppContent = () => {
     return (
         <Router>
             <div className="app">
-                <Navbar />
+                <Navbar toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
                 <div className="container">
                     <Routes>
                         <Route path="/" element={<Home />} />
@@ -44,6 +65,7 @@ const AppContent = () => {
                         <Route path="/guide" element={<GuidePage />} />
                     </Routes>
                 </div>
+                <Chatbot />
             </div>
         </Router>
     );
