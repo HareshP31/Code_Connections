@@ -103,12 +103,17 @@ export const loginUser = async (identifier, password) => {
             if (!querySnapshot.empty) {
                 email = querySnapshot.docs[0].data().email;
             } else {
-                throw new Error('No account found with that username.');
+                throw new Error('auth/user-not-found');
             }
         }
 
+        console.log("Attempting login with email:", email);
+        await setPersistence(auth, browserSessionPersistence);
+
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
+
+        console.log("User logged in:", user.uid);
 
         return {
             uid: user.uid,
@@ -116,7 +121,8 @@ export const loginUser = async (identifier, password) => {
             username: user.displayName,
         };
     } catch (error) {
-        throw new Error(error.message);
+        console.error("Login error:", error.code || error.message);
+        throw new Error(error.code ? error.code : error.message);
     }
 };
 

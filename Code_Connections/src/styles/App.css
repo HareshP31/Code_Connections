@@ -480,6 +480,15 @@ body > div {
   justify-content: center;
 }
 
+.register-page {
+  max-width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .planguage-dropdown {
   background: black;
   border: 2px solid white;
@@ -601,4 +610,19 @@ body.dark .view-profile-posts-titles {
 
 body.light .view-profile-posts-titles {
   color: black;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  animation: spin 2s linear infinite;
+  margin-top: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

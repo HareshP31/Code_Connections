@@ -83,7 +83,7 @@ function Register() {
     };
 
     return (
-        <div>
+        <div className="register-page">
             <h2>Register</h2>
             <form onSubmit={handleSubmit}>
                 {/* Username Field */}

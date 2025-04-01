@@ -7,22 +7,40 @@ function Login() {
     const [identifier, setIdentifier] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { login } = useAuth();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
+        setError('');
         try {
             const user = await loginUser(identifier, password);
             login(user);
             navigate('/');
-            window.location.reload();
         } catch (err) {
-            setError(err.message);
+            if (err.message.includes('auth/user-not-found')) {
+                setError('No account found with that email or username.');
+              } else if (err.message.includes('auth/wrong-password')) {
+                setError('Incorrect password. Please try again.');
+              } else if (err.message.includes('auth/invalid-email')) {
+                setError('Invalid email format.');
+              }
+                else if (err.message.includes('auth/too-many-requests')) {
+                    setError('Too many failed attempts. Please wait a few minutes or reset your password.');
+                }
+                else {
+                setError('An error occurred. Please try again.');
+              }
+        } finally {
+            setLoading(false);
         }
     };
 
     const handleGoogleLogin = async () => {
+        setLoading(true);
+        setError('');
         try {
             const user = await loginWithGoogle();
             login(user);
@@ -30,6 +48,8 @@ function Login() {
             window.location.reload();
         } catch (err) {
             setError(err.message);
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -52,7 +72,9 @@ function Login() {
                 />
                 <br />
                 <br />
-                <button type="submit">Log In</button>
+                <button type="submit" disabled={loading}>
+                    {loading ? 'Loading...' : 'Log In'}
+                </button>
             </form>
             <button onClick={handleGoogleLogin} className="google-login-button" style={{ marginTop: '10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                 <img 
@@ -60,10 +82,15 @@ function Login() {
                     alt="Google Icon" 
                     style={{ width: '20px', height: '20px' }} 
                 />
-                Log in with Google
+                {loading ? 'Loading...' : 'Log in with Google'}
             </button>
 
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {loading && <div className="loading-spinner"></div>}
+
+            {error && 
+                <p style={{ color: 'red' }}>
+                    {error}
+                </p>}
         </div>
     );
 }
