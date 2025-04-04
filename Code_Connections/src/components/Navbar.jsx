@@ -22,6 +22,7 @@ const Navbar = ({ toggleTheme, isDarkMode }) => {
   return (
     <nav className={`navbar ${isDarkMode ? 'dark' : 'light'}`}>
       <button onClick={() => navigate('/')} className="nav-link">Home</button>
+      <button onClick={() => navigate('/timeline')} className="nav-link">Timeline</button>
       <button onClick={() => navigate('/guide')} className="nav-link">Guide</button>
       {user && (
         <button onClick={() => navigate('/create')} className="nav-link">Create Post</button>

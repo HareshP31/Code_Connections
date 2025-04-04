@@ -15,6 +15,7 @@ import Chatbot from './components/Chatbot.jsx';
 import { AuthProvider, useAuth } from './AuthContext.jsx';
 import { initializeAuthPersistence } from './services/authService';
 import './styles/App.css';
+import TimelinePage from './pages/TimelinePage.jsx';
 
 const AppContent = () => {
     const { loading } = useAuth();
@@ -63,6 +64,7 @@ const AppContent = () => {
                         <Route path="/users/:username" element={<UserProfile />} /> 
                         <Route path="/users" element={<UsersList />} />
                         <Route path="/guide" element={<GuidePage />} />
+                        <Route path="/timeline" element={<TimelinePage />} />
                     </Routes>
                 </div>
                 <Chatbot />
