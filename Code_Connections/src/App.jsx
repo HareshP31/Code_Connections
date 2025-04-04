@@ -14,6 +14,7 @@ import GuidePage from './pages/GuidePage';
 import Chatbot from './components/Chatbot.jsx';
 import { AuthProvider, useAuth } from './AuthContext.jsx';
 import { initializeAuthPersistence } from './services/authService';
+import ForgotPassword from './pages/ForgotPassword';
 import './styles/App.css';
 
 const AppContent = () => {
@@ -63,6 +64,7 @@ const AppContent = () => {
                         <Route path="/users/:username" element={<UserProfile />} /> 
                         <Route path="/users" element={<UsersList />} />
                         <Route path="/guide" element={<GuidePage />} />
+                        <Route path="/forgot-password" element={<ForgotPassword />} />
                     </Routes>
                 </div>
                 <Chatbot />
