@@ -12,10 +12,12 @@ import UserProfile from './pages/UserProfile';
 import UsersList from './pages/UsersList';
 import GuidePage from './pages/GuidePage';
 import Chatbot from './components/Chatbot.jsx';
+import AboutPage from './pages/AboutPage.jsx';
 import { AuthProvider, useAuth } from './AuthContext.jsx';
 import { initializeAuthPersistence } from './services/authService';
 import ForgotPassword from './pages/ForgotPassword';
 import './styles/App.css';
+import TimelinePage from './pages/TimelinePage.jsx';
 
 const AppContent = () => {
     const { loading } = useAuth();
@@ -54,7 +56,7 @@ const AppContent = () => {
                 <Navbar toggleTheme={toggleTheme} isDarkMode={isDarkMode} />
                 <div className="container">
                     <Routes>
-                        <Route path="/" element={<Home />} />
+                        <Route path="/home" element={<Home />} />
                         <Route path="/register" element={<Register />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/create" element={<CreatePost />} />
@@ -64,6 +66,8 @@ const AppContent = () => {
                         <Route path="/users/:username" element={<UserProfile />} /> 
                         <Route path="/users" element={<UsersList />} />
                         <Route path="/guide" element={<GuidePage />} />
+                        <Route path="/timeline" element={<TimelinePage />} />
+                        <Route path="/" element={<AboutPage />} />
                         <Route path="/forgot-password" element={<ForgotPassword />} />
                     </Routes>
                 </div>

@@ -283,7 +283,7 @@ const PostPage = () => {
         </div>
       </div>
 
-      <div className="post-content">
+      <div className={`post-content ${!post.image_url ? 'no-image' : ''}`}>
         <p>{post.content}</p>
       </div>
       
