@@ -17,7 +17,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div style={{ padding: "20px", color: "white" }}>
+    <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", padding: "20px"}}>
       <h2>Forgot Password</h2>
       <form onSubmit={handleReset}>
         <input

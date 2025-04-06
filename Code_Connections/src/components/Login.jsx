@@ -100,8 +100,8 @@ function Login() {
       {error && <p style={{ color: "red" }}>{error}</p>}
 
       <p style={{ marginTop: "10px" }}>
-        <Link to="/forgot-password" style={{ color: "yellow" }}>
-          Forgot your password?
+        <Link to="/forgot-password" style={{ color: "#744bfa" }}>
+          Forgot Password?
         </Link>
       </p>
     </div>
