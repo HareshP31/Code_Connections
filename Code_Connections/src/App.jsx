@@ -15,6 +15,7 @@ import Chatbot from './components/Chatbot.jsx';
 import AboutPage from './pages/AboutPage.jsx';
 import { AuthProvider, useAuth } from './AuthContext.jsx';
 import { initializeAuthPersistence } from './services/authService';
+import ForgotPassword from './pages/ForgotPassword';
 import './styles/App.css';
 import TimelinePage from './pages/TimelinePage.jsx';
 
@@ -67,6 +68,7 @@ const AppContent = () => {
                         <Route path="/guide" element={<GuidePage />} />
                         <Route path="/timeline" element={<TimelinePage />} />
                         <Route path="/" element={<AboutPage />} />
+                        <Route path="/forgot-password" element={<ForgotPassword />} />
                     </Routes>
                 </div>
                 <Chatbot />
