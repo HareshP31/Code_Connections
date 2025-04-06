@@ -129,6 +129,14 @@ body.light .search-input {
   padding: 40px;
 }
 
+.post-content.no-image {
+  max-width: 900px;
+  height: auto;
+  word-wrap: break-word;
+  border: 2px solid white;
+  padding: 40px;
+}
+
 .post-image img{
   width: 100%;
   height: auto;
@@ -625,4 +633,15 @@ body.light .view-profile-posts-titles {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+.hackathons-timeline p {
+  color: white;
+  font-size: 30px;
+}
+
+.about-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }

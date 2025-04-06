@@ -6,10 +6,12 @@ const months = [
 ];
 
 const importantDates = {
-  "2025-04-05": "Special Event",
-  "2025-10-15": "Project Deadline",
-  "2025-10-20": "Team Meeting",
-  "2025-11-05": "Conference",
+  "2025-10-03": "KnightHacks",
+  "2025-01-25": "SwampHacks",
+  "2025-02-07": "WiNGHacks",
+  "2025-04-12": "Hackabull",
+  "2025-04-05": "HackUSF",
+  "2025-09-26": "ShellHacks",
 };
 
 const daysOfWeek = ["S", "M", "T", "W", "R", "F", "S"];
@@ -79,7 +81,7 @@ const TimelinePage = () => {
               style={{
                 textAlign: "center",
                 padding: "10px",
-                border: isImportant ? "3px solid #ff9800" : "1px solid #ccc",
+                border: isImportant ? "3px solid #744bfa" : "1px solid grey",
                 borderRadius: "4px",
                 fontWeight: isImportant ? "bold" : "normal",
                 transition: "transform 0.2s ease",
@@ -141,23 +143,22 @@ const TimelinePage = () => {
     <div
       className="calendar-container"
       style={{
-        padding: "20px",
-        fontFamily: "Arial, sans-serif",
-        "--day-bg-color": window.matchMedia("(prefers-color-scheme: dark)").matches
-          ? "black"
-          : "gold",
+        padding: "75px",
       }}
     >
       <div
-        className="placeholder-section"
+        className="hackathons-timeline"
         style={{
-          height: "100vh",
+          height: "100%",
           display: "flex",
           alignItems: "center",
+          flexDirection: "column",
           justifyContent: "center",
-          backgroundColor: "#f0f0f0",
+          backgroundColor: "#3e345c",
+          color: "white",
         }}
       >
+        <h1>Notable FL Hackathons:</h1>
         <button
           onClick={scrollToCalendar}
           style={{
@@ -168,12 +169,19 @@ const TimelinePage = () => {
         >
           Scroll to Calendar
         </button>
+        <p>KnightHacks ⚔️ (Fall, UCF)</p>
+        <p>ShellHacks 👾 (Fall, FIU)</p>
+        <p>HackUSF 🐂 (Spring, USF)</p>
+        <p>Hackabull 🐂 (Spring, USF)</p>
+        <p>SwampHacks 🐊 (Spring, UF)</p>
+        <p>WiNGHacks 🧚(Spring, UF)</p>
       </div>
 
       <div
         ref={calendarRef}
         className={`calendar-view ${isCalendarVisible ? "fade-in" : "fade-out"}`}
         style={{
+          padding: "100px",
           opacity: isCalendarVisible ? 1 : 0,
           transform: isCalendarVisible ? "translateY(0)" : "translateY(20px)",
           transition: "opacity 0.6s ease, transform 0.6s ease",
