@@ -156,7 +156,7 @@ const PostPage = () => {
         console.error("Error updating user post count:", err);
       }
   
-      navigate('/');
+      navigate('/home');
     } else {
       console.error('Error deleting post:', error);
     }
@@ -182,6 +182,9 @@ const PostPage = () => {
   const formattedDate = DateTime.fromISO(post.created_at)
     .setZone("America/New_York")
     .toLocaleString(DateTime.DATETIME_MED);
+
+  const parsedImageUrls = typeof post.image_urls === 'string' ? JSON.parse(post.image_urls) : post.image_urls;
+
 
   return (
     <div className="post-page">
@@ -283,14 +286,22 @@ const PostPage = () => {
         </div>
       </div>
 
-      <div className={`post-content ${!post.image_url ? 'no-image' : ''}`}>
+      <div className={`post-content ${Array.isArray(parsedImageUrls) && parsedImageUrls.length === 0 ? 'no-image' : ''}`}>
         <p>{post.content}</p>
       </div>
       
-      {post.image_url && (
-        <div className="post-image">
-          <img src={post.image_url} alt="Post" />
-        </div>
+      
+      {Array.isArray(parsedImageUrls) && parsedImageUrls.length > 0 && (
+        <div className="post-images-grid">
+          {parsedImageUrls.map((url, index) => (
+            <img
+              key={index}
+              src={url}
+              alt={`Post image ${index + 1}`}
+              className="post-image"
+            />
+          ))}
+          </div>
       )}
       
       

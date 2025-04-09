@@ -119,6 +119,10 @@ body.light .search-input {
   flex-shrink: 0;
   border: 2px solid white;
   padding: 40px;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
 }
 
 .post-content {
@@ -644,4 +648,12 @@ body.light .view-profile-posts-titles {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.post-images-grid {
+  display: flex;
+  justify-content: top;
+  flex-direction: column;
+  max-width: 250px;
+  height: auto;
 }

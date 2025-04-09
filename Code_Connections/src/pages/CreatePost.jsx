@@ -6,12 +6,12 @@ import { doc, getDoc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 
 const pLanguages = [ "JavaScript", "Python", "Java", "C", "C++", "C#", "Ruby", "Swift", "Kotlin", "Rust", "PHP", "TypeScript", "React", "Godot", "Unity", "Arduino", "Flask", "Golang", "Lua", "AWS", "GCP", "Azure"];
-const pCategories = ["Beginner", "Advanced", "AI/Machine Learning", "Game", "Educational", "Virtual Reality", "Computer Vision", "Embedded Systems"]
+const pCategories = ["Beginner", "Advanced", "AI/Machine Learning", "Game", "Educational", "Virtual Reality", "Computer Vision", "Embedded Systems"];
 
 const CreatePost = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
-  const [imageFile, setImageFile] = useState(null);
+  const [imageFiles, setImageFiles] = useState([]);
   const [pSearchTerm, setpSearchTerm] = useState('');
   const [selectedLanguages, setSelectedLanguages] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -19,7 +19,7 @@ const CreatePost = () => {
   const { user } = useAuth(); 
 
   const handleFileChange = (e) => {
-    setImageFile(e.target.files[0]);
+    setImageFiles([...e.target.files]);
   };
 
 
@@ -74,21 +74,24 @@ const CreatePost = () => {
       return;
     }
 
-    let imageUrl = null;
+    let imageUrls = [];
 
-    if (imageFile) {
-      const fileName = `${Date.now()}-${imageFile.name}`;
-      const { data, error } = await supabase.storage
+    for(const file of imageFiles) {
+      const fileName = `${Date.now()}-${file.name}`;
+      const { error: uploadError } = await supabase.storage
         .from('post-images')
-        .upload(fileName, imageFile);
+        .upload(fileName, file);
 
-      if (error) {
-        console.error('Error uploading image:', error);
-        return;
+      if(uploadError) {
+        console.error('Image upload failed:', uploadError);
+        continue;
       }
 
-      const { data: publicUrlData } = supabase.storage.from('post-images').getPublicUrl(fileName);
-      imageUrl = publicUrlData.publicUrl;
+      const { data: publicUrlData } = supabase.storage
+        .from('post-images')
+        .getPublicUrl(fileName);
+
+      imageUrls.push(publicUrlData.publicUrl);
     }
 
     const { error } = await supabase
@@ -99,7 +102,7 @@ const CreatePost = () => {
           content, 
           upvotes: 0, 
           created_at: new Date().toISOString(), 
-          image_url: imageUrl,
+          image_urls: imageUrls,
           owner_id: user.uid, 
           owner_name: user.username,
           language_flair: selectedLanguages,
@@ -112,7 +115,7 @@ const CreatePost = () => {
     } else {
 
       await incrementUserPostCount(user.uid);
-      navigate('/');
+      navigate('/home');
     }
   };
 
@@ -126,8 +129,8 @@ const CreatePost = () => {
         <label>Content: (Drag bottom right of box to make it bigger)</label>
         <textarea value={content} onChange={(e) => setContent(e.target.value)} required />
 
-        <label>Upload Image:</label>
-        <input type="file" accept="image/*" onChange={handleFileChange} />
+        <label>Upload Image(s):</label>
+        <input type="file" multiple accept="image/*" onChange={handleFileChange} />
 
         <label>Programming Language/Technology:</label>
         <input
