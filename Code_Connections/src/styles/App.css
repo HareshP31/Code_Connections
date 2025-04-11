@@ -32,6 +32,19 @@ body.dark {
   margin-top: -12px; 
 }
 
+.navbar-scroll {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  white-space: nowrap;
+  margin-top: 50px;
+  padding: 20px 0;
+}
+
+.navbar-scroll button {
+  max-height: 40px;
+}
+
 body.dark .navbar {
   color: black;
   background-color: gold;
@@ -72,17 +85,25 @@ body.light button {
 .search-form {
   display: flex;
   flex-direction: row;
-  align-items: center;
+  justify-content: center;
   height: 100%;
   width: auto;
 }
 
+.search-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
 .search-input {
-  padding: 0.5rem;
+  padding: 10px;
   border-radius: 5px;
   flex-grow: 1;
   margin-right: 0.5rem;
-  margin-top: 2.25rem;
+  margin-top: 20px;
+  max-height: 10px;
 }
 
 body.dark .search-input {

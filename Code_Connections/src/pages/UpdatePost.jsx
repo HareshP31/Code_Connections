@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { supabase } from '../client';
 import { useAuth } from '../AuthContext';
 
-const pLanguages = [ "JavaScript", "Python", "Java", "C", "C++", "C#", "Ruby", "Swift", "Kotlin", "Rust", "PHP", "TypeScript", "React", "Godot", "Unity", "Arduino", "Flask", "Golang", "Lua", "AWS", "GCP", "Azure"];
+const pLanguages = [ "HTML/CSS", "JavaScript", "Python", "Java", "C", "C++", "C#", "Ruby", "Swift", "Kotlin", "Rust", "PHP", "TypeScript", "React", "Godot", "Unity", "Arduino", "Flask", "Golang", "Lua", "AWS", "GCP", "Azure"];
 const pCategories = ["Beginner", "Advanced", "AI/Machine Learning", "Game", "Educational", "Virtual Reality", "Computer Vision", "Embedded Systems"];
 
 const UpdatePost = () => {
@@ -167,6 +167,21 @@ const UpdatePost = () => {
             ))}
           </ul>
         )}      
+
+        <div className="scrollable-language-list">
+          <h4>Full List:</h4>
+          <ul>
+            {pLanguages.map((lang) => (
+              <li 
+                key={lang} 
+                className={`language-item ${selectedLanguages.includes(lang) ? "selected" : ""}`} 
+                onClick={() => handleLanguageSelect(lang)}
+              >
+                {lang}
+              </li>
+            ))}
+          </ul>
+        </div>
 
         <div className="selected-languages">
           {selectedLanguages.map((lang) => (
