@@ -654,6 +654,12 @@ body.light .view-profile-posts-titles {
   display: flex;
   justify-content: top;
   flex-direction: column;
-  max-width: 250px;
+  max-width: 300px;
   height: auto;
+}
+
+.image-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: left;
 }

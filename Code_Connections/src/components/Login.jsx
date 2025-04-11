@@ -19,7 +19,7 @@ function Login() {
     try {
       const user = await loginUser(identifier, password);
       login(user);
-      navigate("/");
+      navigate("/home");
     } catch (err) {
       if (err.message.includes("auth/user-not-found")) {
         setError("No account found with that email or username.");

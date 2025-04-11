@@ -61,6 +61,24 @@ const UpdatePost = () => {
     lang.toLowerCase().includes(pSearchTerm.toLowerCase()) && !selectedLanguages.includes(lang)
   );
 
+  const handleRemoveImage = async (imageUrl) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this image?");
+    if (!confirmDelete) return;
+    
+    const updatedImageUrls = imageUrls.filter((url) => url !== imageUrl);
+    setImageUrls(updatedImageUrls);
+
+    const fileName = imageUrl.split('/').pop().split('?')[0];
+
+    const { error } = await supabase.storage
+      .from('post-images')
+      .remove([fileName]);
+
+    if (error) {
+      console.error('Image deletion failed:', error);
+    }
+  };
+
   const handleUpdate = async (e) => {
     e.preventDefault();
     if (!post || user?.uid !== post.owner_id) return;
@@ -124,7 +142,10 @@ const UpdatePost = () => {
           <div className="image-preview-container">
             <p>Current Images:</p>
             {imageUrls.map((url, idx) => (
-              <img key={idx} src={url} alt={`preview-${idx}`} width="150" />
+              <div key={idx} className="image-container">
+                <img key={idx} src={url} alt={`preview-${idx}`} width="150" />
+                <button type="button" onClick={() => handleRemoveImage(url)}>Remove?</button>
+              </div>
             ))}
           </div>
         )}
@@ -169,7 +190,7 @@ const UpdatePost = () => {
           ))}
         </div> 
 
-        <button type="submit">Update Post</button>
+        <button type="submit">CLICK HERE TO SAVE CHANGES</button>
       </form>
     </div>
   );
