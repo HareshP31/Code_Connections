@@ -45,7 +45,7 @@ function Login() {
     try {
       const user = await loginWithGoogle();
       login(user);
-      navigate("/");
+      navigate("/home");
       window.location.reload();
     } catch (err) {
       setError(err.message);
