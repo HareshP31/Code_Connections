@@ -77,14 +77,14 @@ useEffect(() => {
     <div>
       <h1 className="home-banner">Code Connections</h1>
       
-      <div className="sort-options" style={{ display: 'flex', alignItems: 'center', gap: '15px', marginBottom: '15px' }}>
-        <label>Sort By:</label>
+      <div className="sort-options">
+        <label>Sort: </label>
         <select value={sortOption} onChange={(e) => setSortOption(e.target.value)} style={{ padding: '5px' }}>
           <option value="created_at">Time Created</option>
           <option value="upvotes">Upvotes</option>
         </select>
 
-        <label>Filter by Tag:</label>
+        <label>Filter: </label>
         <select value={selectedTag} onChange={(e) => setSelectedTag(e.target.value)} style={{ padding: '5px' }}>
           <option value="">All Tags</option>
           {availableTags.map(tag => (

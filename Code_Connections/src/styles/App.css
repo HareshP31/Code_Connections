@@ -91,10 +91,13 @@ body.light button {
 }
 
 .search-container {
+  flex: 1;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  width: 100%;
+  min-width: 300px;
 }
 
 .search-input {
@@ -406,7 +409,28 @@ button:hover {
 }
 
 .sort-options{
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 15px;
+  margin-bottom: 15px; 
   padding: 20px;
+  max-width: 100px;
+}
+
+@media (max-width: 426px) {
+  .sort-options {
+    flex-wrap: wrap;
+  }
+
+  .sort-options button {
+    margin-left: auto;
+  }
+
+  .post-page {
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .profile-button {
