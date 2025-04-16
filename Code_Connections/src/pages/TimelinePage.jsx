@@ -66,8 +66,8 @@ const TimelinePage = () => {
           opacity: isTransitioning ? 0 : 1, // Control opacity based on transition state
         }}
       >
-        {daysOfWeek.map((day) => (
-          <div key={day} style={{ fontWeight: "bold", textAlign: "center" }}>{day}</div>
+        {daysOfWeek.map((day, index) => (
+          <div key={`${day}-${index}`} style={{ fontWeight: "bold", textAlign: "center" }}>{day}</div>
         ))}
         {calendarDays.map((day, index) => {
           const dateString = day

@@ -431,6 +431,64 @@ button:hover {
     display: flex;
     flex-direction: column;
   }
+
+  .guide-page .section {
+    overflow: hidden;
+    height: 100%;
+  }
+
+  .hackathon-section {
+    flex-direction: column;
+    justify-content: flex-start;
+    text-align: left;
+  }
+
+  .hackathon-section p,
+  .hackathon-section .lottie-collaboration,
+  .hackathon-section .lottie-expect,
+  .hackathon-section .lottie-confused,
+  .hackathon-section .lottie-goals {
+    width: 100%;
+    height: auto;
+    margin-bottom: 1.5rem;
+  }
+  
+  .hackathon-container {
+    width: 100%;
+    padding: 2rem 1rem;
+    box-sizing: border-box;
+    border-radius: 1rem;
+    min-height: auto;
+    margin-bottom: 2rem;
+    overflow: visible;
+  }
+}
+
+.hackathon-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hackathon-section .lottie-collaboration,
+.hackathon-section .lottie-expect,
+.hackathon-section .lottie-confused,
+.hackathon-section .lottie-goals {
+  flex: 1 1 300px;
+  max-width: 400px;
+  min-width: 250px;
+}
+
+.hackathon-section p {
+  flex: 1 1 300px;
+  min-width: 250px;
+  font-size: 1rem;
+  line-height: 1.6;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .profile-button {
